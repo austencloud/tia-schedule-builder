@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Museum Staffing Schedule - June 2025</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "svelte": "https://unpkg.com/svelte@5/dist/index.js",
+          "svelte/": "https://unpkg.com/svelte@5/dist/"
+        }
+      }
+    </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .app-container {
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      /* Glassmorphism styles */
+      .glass {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      }
+
+      .glass-dark {
+        background: rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .header {
+        padding: 30px;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
+      .header h1 {
+        color: white;
+        font-size: 2.5rem;
+        font-weight: 300;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .header p {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1.1rem;
+      }
+
+      .controls-panel {
+        padding: 25px;
+        margin-bottom: 30px;
+      }
+
+      .controls-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .control-group {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 20px;
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .control-group h3 {
+        color: white;
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+        font-weight: 500;
+      }
+
+      .color-picker-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+      }
+
+      .color-picker-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .color-picker-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .color-picker-item label {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.85rem;
+        cursor: pointer;
+        flex: 1;
+      }
+
+      .color-picker-item input[type="color"] {
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .schedule-container {
+        padding: 30px;
+      }
+
+      .schedule-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .day-column {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 15px;
+        padding: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        min-height: 500px;
+      }
+
+      .day-header {
+        text-align: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .day-name {
+        color: white;
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+
+      .day-date {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.9rem;
+      }
+
+      .day-hours {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.8rem;
+        margin-top: 5px;
+      }
+
+      .shift-card {
+        margin-bottom: 15px;
+        padding: 15px;
+        border-radius: 12px;
+        border-left: 4px solid;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .shift-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: inherit;
+        opacity: 0.1;
+        z-index: -1;
+      }
+
+      .shift-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .shift-time {
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        color: white;
+      }
+
+      .shift-staff {
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 6px;
+        color: white;
+      }
+
+      .shift-role {
+        font-size: 0.85rem;
+        opacity: 0.9;
+        margin-bottom: 4px;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .shift-area {
+        font-size: 0.8rem;
+        opacity: 0.8;
+        font-style: italic;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .role-pattern {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 20px;
+        height: 100%;
+        opacity: 0.3;
+      }
+
+      .pattern-dots {
+        background-image: radial-gradient(
+          circle,
+          currentColor 1px,
+          transparent 1px
+        );
+        background-size: 4px 4px;
+      }
+
+      .pattern-stripes {
+        background-image: repeating-linear-gradient(
+          45deg,
+          currentColor 0px,
+          currentColor 1px,
+          transparent 1px,
+          transparent 4px
+        );
+      }
+
+      .pattern-waves {
+        background-image: repeating-linear-gradient(
+          90deg,
+          currentColor 0px,
+          currentColor 1px,
+          transparent 1px,
+          transparent 3px
+        );
+      }
+
+      .legend {
+        margin-top: 30px;
+        padding: 25px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+      }
+
+      .legend h3 {
+        color: white;
+        margin-bottom: 20px;
+        font-size: 1.2rem;
+      }
+
+      .legend-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .legend-color {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .legend-text {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 1200px) {
+        .schedule-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .schedule-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .controls-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .schedule-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script>
+      const { createApp, mount } = Svelte;
+
+      // Schedule data
+      const scheduleData = [
+        {
+          day: "Monday",
+          date: "6/2/2025",
+          hours: "11:00 AM - 1:00 PM",
+          shifts: [
+            {
+              time: "11:00 AM - 2:00 PM",
+              staff: "Miranda",
+              role: "Animal Care Lead",
+              area: "Animals/Front",
+              hours: 3,
+            },
+            {
+              time: "11:00 AM - 2:00 PM",
+              staff: "Grace",
+              role: "Animal Care Support",
+              area: "Animals/Front",
+              hours: 3,
+            },
+            {
+              time: "11:00 AM - 2:00 PM",
+              staff: "Emilie",
+              role: "Trainee",
+              area: "Animals/Front",
+              hours: 3,
+            },
+          ],
+        },
+        {
+          day: "Tuesday",
+          date: "6/3/2025",
+          hours: "11:00 AM - 1:00 PM + Cat Jam",
+          shifts: [
+            {
+              time: "11:00 AM - 2:00 PM",
+              staff: "Taylor",
+              role: "Animal Care Lead",
+              area: "Animals/Front",
+              hours: 3,
+            },
+            {
+              time: "11:00 AM - 2:00 PM",
+              staff: "Gemma",
+              role: "Animal Care Support",
+              area: "Animals/Front",
+              hours: 3,
+            },
+            {
+              time: "11:00 AM - 2:00 PM",
+              staff: "Cam",
+              role: "Trainee",
+              area: "Animals/Front",
+              hours: 3,
+            },
+            {
+              time: "6:00 PM - 10:00 PM",
+              staff: "Courtney",
+              role: "Event Support",
+              area: "Front/Setup",
+              hours: 4,
+            },
+          ],
+        },
+        {
+          day: "Wednesday",
+          date: "6/4/2025",
+          hours: "1:00 PM - 8:00 PM",
+          shifts: [
+            {
+              time: "9:30 AM - 3:00 PM",
+              staff: "Athena",
+              role: "Lab Specialist",
+              area: "Lab",
+              hours: 5.5,
+            },
+            {
+              time: "1:00 PM - 8:00 PM",
+              staff: "Grace",
+              role: "Animal Care/Front",
+              area: "Animals/Front",
+              hours: 7,
+            },
+            {
+              time: "3:00 PM - 8:00 PM",
+              staff: "Morph",
+              role: "Front Desk",
+              area: "Front/Website",
+              hours: 5,
+            },
+            {
+              time: "3:00 PM - 6:00 PM",
+              staff: "Emily",
+              role: "Volunteer Support",
+              area: "Front",
+              hours: 3,
+            },
+          ],
+        },
+        {
+          day: "Thursday",
+          date: "6/5/2025",
+          hours: "11:00 AM - 8:00 PM",
+          shifts: [
+            {
+              time: "11:00 AM - 5:00 PM",
+              staff: "Rob",
+              role: "Lab/Teaching",
+              area: "Lab/Front",
+              hours: 6,
+            },
+            {
+              time: "11:00 AM - 8:00 PM",
+              staff: "Grace",
+              role: "Animal Care/Front",
+              area: "Animals/Front",
+              hours: 9,
+            },
+            {
+              time: "3:00 PM - 8:00 PM",
+              staff: "Bayla",
+              role: "Lab/Teaching",
+              area: "Lab",
+              hours: 5,
+            },
+            {
+              time: "11:00 AM - 5:00 PM",
+              staff: "Emilie",
+              role: "Trainee",
+              area: "Various",
+              hours: 6,
+            },
+          ],
+        },
+        {
+          day: "Friday",
+          date: "6/6/2025",
+          hours: "11:00 AM - 8:00 PM",
+          shifts: [
+            {
+              time: "11:00 AM - 5:00 PM",
+              staff: "Miranda",
+              role: "Animal Care/Front",
+              area: "Animals/Front",
+              hours: 6,
+            },
+            {
+              time: "11:00 AM - 4:00 PM",
+              staff: "Taylor",
+              role: "Animal Care",
+              area: "Animals",
+              hours: 5,
+            },
+            {
+              time: "11:00 AM - 8:00 PM",
+              staff: "Morph",
+              role: "Front Desk",
+              area: "Front/Website",
+              hours: 9,
+            },
+            {
+              time: "11:00 AM - 8:00 PM",
+              staff: "Athena",
+              role: "Lab Work",
+              area: "Lab",
+              hours: 9,
+            },
+            {
+              time: "4:00 PM - 8:00 PM",
+              staff: "Reece",
+              role: "Volunteer Support",
+              area: "Front",
+              hours: 4,
+            },
+          ],
+        },
+        {
+          day: "Saturday",
+          date: "6/7/2025",
+          hours: "11:00 AM - 8:00 PM",
+          shifts: [
+            {
+              time: "11:00 AM - 5:00 PM",
+              staff: "Gemma",
+              role: "Animal Care/Front",
+              area: "Animals/Front",
+              hours: 6,
+            },
+            {
+              time: "2:00 PM - 8:00 PM",
+              staff: "Rob",
+              role: "Lab/Teaching/Classes",
+              area: "Lab/Classroom",
+              hours: 6,
+            },
+            {
+              time: "11:00 AM - 8:00 PM",
+              staff: "Morph",
+              role: "Front Desk/Tech",
+              area: "Front/Tech",
+              hours: 9,
+            },
+            {
+              time: "11:00 AM - 8:00 PM",
+              staff: "Cam",
+              role: "Trainee",
+              area: "Various",
+              hours: 9,
+            },
+            {
+              time: "4:00 PM - 8:00 PM",
+              staff: "Courtney",
+              role: "Volunteer Support",
+              area: "Various",
+              hours: 4,
+            },
+          ],
+        },
+        {
+          day: "Sunday",
+          date: "6/8/2025",
+          hours: "11:00 AM - 8:00 PM",
+          shifts: [
+            {
+              time: "11:00 AM - 8:00 PM",
+              staff: "Grace",
+              role: "Animal Care/Front",
+              area: "Animals/Front",
+              hours: 9,
+            },
+            {
+              time: "12:00 PM - 8:00 PM",
+              staff: "Bayla",
+              role: "Lab/Teaching",
+              area: "Lab",
+              hours: 8,
+            },
+            {
+              time: "11:00 AM - 8:00 PM",
+              staff: "Emilie",
+              role: "Trainee",
+              area: "Various",
+              hours: 9,
+            },
+            {
+              time: "2:00 PM - 6:00 PM",
+              staff: "Emily",
+              role: "Volunteer Support",
+              area: "Various",
+              hours: 4,
+            },
+          ],
+        },
+      ];
+
+      function ScheduleApp() {
+        // Default colors for staff members
+        let staffColors = $state({
+          Miranda: "#FF6B6B",
+          Taylor: "#4ECDC4",
+          Grace: "#45B7D1",
+          Gemma: "#96CEB4",
+          Rob: "#FFEAA7",
+          Athena: "#DDA0DD",
+          Bayla: "#98D8C8",
+          Morph: "#F7DC6F",
+          Emilie: "#BB8FCE",
+          Cam: "#85C1E9",
+          Courtney: "#F8C471",
+          Emily: "#82E0AA",
+          Reece: "#F1948A",
+        });
+
+        // Role patterns for accessibility
+        const rolePatterns = {
+          "Animal Care Lead": "pattern-dots",
+          "Animal Care Support": "pattern-dots",
+          "Animal Care/Front": "pattern-dots",
+          "Animal Care": "pattern-dots",
+          "Lab Specialist": "pattern-stripes",
+          "Lab/Teaching": "pattern-stripes",
+          "Lab Work": "pattern-stripes",
+          "Lab/Teaching/Classes": "pattern-stripes",
+          "Front Desk": "pattern-waves",
+          "Front Desk/Tech": "pattern-waves",
+          Trainee: "",
+          "Event Support": "",
+          "Volunteer Support": "",
+        };
+
+        function updateStaffColor(staff, color) {
+          staffColors[staff] = color;
+        }
+
+        function getShiftStyle(shift) {
+          const baseColor = staffColors[shift.staff];
+          return {
+            backgroundColor: `${baseColor}20`,
+            borderLeftColor: baseColor,
+            color: "white",
+          };
+        }
+
+        return {
+          view: () => `
+                    <div class="app-container">
+                        <header class="glass header">
+                            <h1>Museum Staffing Schedule</h1>
+                            <p>June 2025 - Optimized Weekly Template</p>
+                        </header>
+                        
+                        <div class="glass controls-panel">
+                            <div class="controls-grid">
+                                <div class="control-group">
+                                    <h3>Staff Colors</h3>
+                                    <div class="color-picker-grid">
+                                        ${Object.keys(staffColors)
+                                          .map(
+                                            (staff) => `
+                                            <div class="color-picker-item">
+                                                <label for="color-${staff}">${staff}</label>
+                                                <input 
+                                                    type="color" 
+                                                    id="color-${staff}"
+                                                    value="${staffColors[staff]}"
+                                                    onchange="updateStaffColor('${staff}', this.value)"
+                                                />
+                                            </div>
+                                        `
+                                          )
+                                          .join("")}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="glass schedule-container">
+                            <div class="schedule-grid">
+                                ${scheduleData
+                                  .map(
+                                    (day) => `
+                                    <div class="day-column">
+                                        <div class="day-header">
+                                            <div class="day-name">${
+                                              day.day
+                                            }</div>
+                                            <div class="day-date">${
+                                              day.date
+                                            }</div>
+                                            <div class="day-hours">${
+                                              day.hours
+                                            }</div>
+                                        </div>
+                                        <div class="shifts">
+                                            ${day.shifts
+                                              .map(
+                                                (shift) => `
+                                                <div class="shift-card" style="background-color: ${
+                                                  staffColors[shift.staff]
+                                                }20; border-left-color: ${
+                                                  staffColors[shift.staff]
+                                                };">
+                                                    <div class="role-pattern ${
+                                                      rolePatterns[
+                                                        shift.role
+                                                      ] || ""
+                                                    }" style="color: ${
+                                                  staffColors[shift.staff]
+                                                };"></div>
+                                                    <div class="shift-time">${
+                                                      shift.time
+                                                    }</div>
+                                                    <div class="shift-staff">${
+                                                      shift.staff
+                                                    }</div>
+                                                    <div class="shift-role">${
+                                                      shift.role
+                                                    }</div>
+                                                    <div class="shift-area">${
+                                                      shift.area
+                                                    }</div>
+                                                </div>
+                                            `
+                                              )
+                                              .join("")}
+                                        </div>
+                                    </div>
+                                `
+                                  )
+                                  .join("")}
+                            </div>
+                            
+                            <div class="legend glass-dark">
+                                <h3>Legend</h3>
+                                <div class="legend-grid">
+                                    <div class="legend-item">
+                                        <div class="legend-color pattern-dots" style="background-color: #FF6B6B; background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 4px 4px;"></div>
+                                        <div class="legend-text">Animal Care</div>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color pattern-stripes" style="background-color: #FFEAA7; background-image: repeating-linear-gradient(45deg, white 0px, white 1px, transparent 1px, transparent 4px);"></div>
+                                        <div class="legend-text">Lab/Teaching</div>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color pattern-waves" style="background-color: #F7DC6F; background-image: repeating-linear-gradient(90deg, white 0px, white 1px, transparent 1px, transparent 3px);"></div>
+                                        <div class="legend-text">Front Desk</div>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color" style="background-color: #BB8FCE;"></div>
+                                        <div class="legend-text">Trainee</div>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-color" style="background-color: #82E0AA;"></div>
+                                        <div class="legend-text">Volunteer</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `,
+          updateStaffColor,
+        };
+      }
+
+      // Mount the app
+      const app = ScheduleApp();
+      document.getElementById("app").innerHTML = app.view();
+
+      // Make updateStaffColor globally available
+      window.updateStaffColor = (staff, color) => {
+        app.updateStaffColor(staff, color);
+        document.getElementById("app").innerHTML = app.view();
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "name": "tia-schedule-builder",
+  "version": "1.0.0",
+  "description": "TIA Schedule Builder - Enhanced Payroll Analytics",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server -p 8000 -o",
+    "dev": "http-server -p 8000 -o -c-1",
+    "serve": "python -m http.server 8000",
+    "build": "echo 'No build process needed for static files'",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [
+    "schedule",
+    "payroll",
+    "analytics",
+    "calendar",
+    "staff-management"
+  ],
+  "author": "TIA Development Team",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

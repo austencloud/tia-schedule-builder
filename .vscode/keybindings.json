@@ -1,0 +1,18 @@
+[
+  {
+    "key": "f5",
+    "command": "workbench.action.tasks.runTask",
+    "args": "shell: ✨ Magical F5 Start",
+    "when": "!inDebugMode"
+  },
+  {
+    "key": "ctrl+f5",
+    "command": "workbench.action.tasks.runTask",
+    "args": "shell: 🔄 Magic Reset Start"
+  },
+  {
+    "key": "shift+f5",
+    "command": "workbench.action.tasks.runTask",
+    "args": "shell: 🧹 Magic Clean Start"
+  }
+]

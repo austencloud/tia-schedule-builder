@@ -1,0 +1,327 @@
+/* TIA Schedule Builder - Table Styles */
+
+/* Interactive Staff Table */
+.staff-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.staff-table th {
+    background: #34495e;
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    transition: background-color 0.2s;
+    border-bottom: 2px solid #2c3e50;
+}
+
+.staff-table th:hover {
+    background: #2c3e50;
+}
+
+.staff-table th:first-child {
+    border-top-left-radius: 10px;
+}
+
+.staff-table th:last-child {
+    border-top-right-radius: 10px;
+}
+
+/* Sortable Column Indicators */
+.staff-table th.sortable::after {
+    content: ' ⇅';
+    opacity: 0.5;
+    font-size: 0.8em;
+    margin-left: 5px;
+    transition: all 0.2s;
+}
+
+.staff-table th.sort-asc::after {
+    content: ' ▲';
+    opacity: 1;
+    color: #3498db;
+    transform: scale(1.2);
+}
+
+.staff-table th.sort-desc::after {
+    content: ' ▼';
+    opacity: 1;
+    color: #3498db;
+    transform: scale(1.2);
+}
+
+/* Table Body */
+.staff-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ecf0f1;
+    transition: background-color 0.2s;
+}
+
+.staff-table tr:hover {
+    background: #f8f9fa;
+}
+
+.staff-table tr:nth-child(even) {
+    background: rgba(248, 249, 250, 0.5);
+}
+
+.staff-table tr:nth-child(even):hover {
+    background: #f8f9fa;
+}
+
+/* Total Row */
+.staff-table .total-row {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef) !important;
+    font-weight: bold;
+    border-top: 2px solid #34495e;
+    border-bottom: none;
+}
+
+.staff-table .total-row td {
+    border-bottom: none;
+    padding: 15px;
+}
+
+.staff-table .total-row:hover {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef) !important;
+}
+
+/* Utilization Badges */
+.utilization {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: bold;
+    text-align: center;
+    min-width: 60px;
+    display: inline-block;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.utilization:hover {
+    transform: scale(1.05);
+}
+
+.utilization.optimal { 
+    background: linear-gradient(135deg, #e8f5e8, #d4edda); 
+    color: #2e7d32; 
+    border: 1px solid #c3e6cb;
+}
+
+.utilization.under { 
+    background: linear-gradient(135deg, #fff3e0, #ffeaa7); 
+    color: #ef6c00; 
+    border: 1px solid #ffeaa7;
+}
+
+.utilization.none { 
+    background: linear-gradient(135deg, #f5f5f5, #e9ecef); 
+    color: #757575; 
+    border: 1px solid #dee2e6;
+}
+
+/* Staff Name Styling */
+.staff-table td:first-child {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Unscheduled Staff Styling */
+.staff-table tr.unscheduled {
+    background: #f0f0f0 !important;
+    color: #999;
+    opacity: 0.7;
+}
+
+.staff-table tr.unscheduled:hover {
+    background: #e9ecef !important;
+    opacity: 0.8;
+}
+
+/* Currency and Number Formatting */
+.staff-table .currency {
+    text-align: right;
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+}
+
+.staff-table .number {
+    text-align: right;
+    font-family: 'Courier New', monospace;
+}
+
+/* Table Loading State */
+.table-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+.table-loading::before {
+    content: '📊';
+    margin-right: 10px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Table Controls */
+.table-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.table-search {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 0.9em;
+    width: 250px;
+}
+
+.table-search:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.table-filters {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.filter-button {
+    padding: 6px 12px;
+    border: 1px solid #ced4da;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: all 0.2s;
+}
+
+.filter-button:hover {
+    background: #e9ecef;
+}
+
+.filter-button.active {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+/* Table Summary */
+.table-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.summary-item {
+    text-align: center;
+    padding: 10px;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.summary-value {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.summary-label {
+    font-size: 0.85em;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+    .staff-table {
+        font-size: 0.9em;
+    }
+    
+    .staff-table th,
+    .staff-table td {
+        padding: 10px 8px;
+    }
+    
+    .table-controls {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .table-search {
+        width: 100%;
+    }
+    
+    .table-filters {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .table-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .staff-table {
+        font-size: 0.8em;
+    }
+    
+    .staff-table th,
+    .staff-table td {
+        padding: 8px 6px;
+    }
+    
+    .utilization {
+        font-size: 0.75em;
+        padding: 3px 6px;
+        min-width: 50px;
+    }
+    
+    .table-summary {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Hide less important columns on mobile */
+    .staff-table th:nth-child(2),
+    .staff-table td:nth-child(2),
+    .staff-table th:nth-child(6),
+    .staff-table td:nth-child(6) {
+        display: none;
+    }
+}

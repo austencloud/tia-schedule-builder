@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TIA Schedule Builder - Magical Dev Mode</title>
+
+    <script>
+      (function () {
+        "use strict";
+
+        function createMagicalLoader() {
+          const loader = document.createElement("div");
+          loader.id = "magical-loader";
+          loader.innerHTML = `
+            <style>
+              #magical-loader {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                z-index: 10000; display: flex; flex-direction: column;
+                justify-content: center; align-items: center; color: white;
+                font-family: system-ui, -apple-system, sans-serif;
+                opacity: 0; transition: opacity 0.3s ease;
+              }
+              .magical-spinner {
+                width: 60px; height: 60px;
+                border: 4px solid rgba(255,255,255,0.3);
+                border-top: 4px solid white; border-radius: 50%;
+                animation: magical-spin 1s linear infinite;
+              }
+              .magical-text {
+                margin-top: 20px; font-size: 18px; font-weight: 500;
+                animation: magical-pulse 2s ease-in-out infinite;
+              }
+              .magical-progress {
+                width: 200px; height: 4px;
+                background: rgba(255,255,255,0.3); border-radius: 2px;
+                margin-top: 20px; overflow: hidden;
+              }
+              .magical-progress-bar {
+                width: 0%; height: 100%;
+                background: linear-gradient(90deg, #00f5ff, #ff00ff, #00f5ff);
+                background-size: 200% 100%;
+                animation: magical-progress 2s ease-out, magical-rainbow 1s linear infinite;
+              }
+              .magical-subtitle {
+                margin-top: 10px; font-size: 14px; opacity: 0.8;
+                color: #a8d8ea;
+              }
+              @keyframes magical-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+              @keyframes magical-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+              @keyframes magical-progress { 0% { width: 0%; } 100% { width: 100%; } }
+              @keyframes magical-rainbow { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+            </style>
+            <div class="magical-spinner"></div>
+            <div class="magical-text">✨ Reloading Schedule Builder...</div>
+            <div class="magical-subtitle">Building beautiful museum schedules</div>
+            <div class="magical-progress"><div class="magical-progress-bar"></div></div>
+          `;
+          return loader;
+        }
+
+        let isReloading = false;
+
+        function handleMagicalReload(event) {
+          if (event.key === "F5" || (event.ctrlKey && event.key === "r")) {
+            if (isReloading) return;
+            isReloading = true;
+            event.preventDefault();
+
+            const loader = createMagicalLoader();
+            document.body.appendChild(loader);
+
+            requestAnimationFrame(() => {
+              loader.style.opacity = "1";
+            });
+
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
+          }
+        }
+
+        function logPerformanceMetrics() {
+          if (window.performance && console.groupCollapsed) {
+            const navigation = performance.getEntriesByType("navigation")[0];
+            if (navigation) {
+              console.groupCollapsed("✨ TIA Schedule Builder Performance");
+              console.log(
+                `🚀 Total Load Time: ${Math.round(
+                  navigation.loadEventEnd - navigation.fetchStart
+                )}ms`
+              );
+              console.log(
+                `🎯 DOM Ready: ${Math.round(
+                  navigation.domContentLoadedEventEnd - navigation.fetchStart
+                )}ms`
+              );
+              console.log(
+                `💨 First Paint: ${Math.round(
+                  navigation.responseEnd - navigation.fetchStart
+                )}ms`
+              );
+              console.log(`📅 Schedule Components: Ready for magic!`);
+
+              if (performance.memory) {
+                console.log(
+                  `🧠 Memory Used: ${Math.round(
+                    performance.memory.usedJSHeapSize / 1024 / 1024
+                  )}MB`
+                );
+              }
+              console.groupEnd();
+            }
+          }
+        }
+
+        function showDeveloperWelcome() {
+          const styles = [
+            "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            "color: white",
+            "padding: 12px 24px",
+            "border-radius: 8px",
+            "font-size: 14px",
+            "font-weight: bold",
+          ].join(";");
+
+          console.log("%c✨ TIA Schedule Builder - Magical Dev Mode!", styles);
+          console.log("🎯 Press F5 for enhanced reload experience");
+          console.log("🔥 Hot Module Replacement is active");
+          console.log("📅 Building beautiful museum schedules...");
+          console.log("💡 Open DevTools for schedule magic");
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+          document.addEventListener("keydown", handleMagicalReload);
+
+          if (typeof __MAGICAL_DEV__ !== "undefined" && __MAGICAL_DEV__) {
+            setTimeout(logPerformanceMetrics, 1000);
+            showDeveloperWelcome();
+          }
+        });
+
+        window.magicalDevSetup = true;
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+    <script type="module">
+      if (import.meta && import.meta.hot) {
+        import.meta.hot.on("vite:beforeUpdate", () => {
+          console.log("🔥 Hot reloading schedule components...");
+        });
+
+        import.meta.hot.on("vite:afterUpdate", () => {
+          console.log("✅ Schedule hot reload complete!");
+        });
+
+        import.meta.hot.on("vite:error", (err) => {
+          console.error("💥 Hot reload error:", err);
+        });
+      }
+    </script>
+  </body>
+</html>

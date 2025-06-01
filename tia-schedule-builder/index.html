@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TIA Schedule Builder - June 2025 Payroll Analytics</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/calendar.css" />
+    <link rel="stylesheet" href="css/modal.css" />
+    <link rel="stylesheet" href="css/table.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h1>TIA Schedule Builder</h1>
+        <div class="subtitle">Enhanced June 2025 Payroll Analytics Report</div>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="navigation">
+        <a href="#summary" class="nav-link active">Summary</a>
+        <a href="#table" class="nav-link">Staff Table</a>
+        <a href="#calendar" class="nav-link">Calendar View</a>
+        <a href="#insights" class="nav-link">Insights</a>
+        <a href="reports/detailed-analysis.html" class="nav-link"
+          >Detailed Analysis</a
+        >
+      </nav>
+
+      <!-- Correction Banner -->
+      <div class="correction-banner">
+        ✅ CALCULATION CORRECTED: Utilization percentages now properly
+        calculated using weekly desired hours × 4.3 weeks per month
+      </div>
+
+      <!-- Summary Cards -->
+      <div id="summary" class="summary-cards">
+        <div class="card cost">
+          <div class="card-value">$8,365</div>
+          <div class="card-label">Total Monthly Payroll</div>
+        </div>
+        <div class="card hours">
+          <div class="card-value">483</div>
+          <div class="card-label">Total Monthly Hours</div>
+        </div>
+        <div class="card staff">
+          <div class="card-value">13/16</div>
+          <div class="card-label">Staff Actually Scheduled</div>
+        </div>
+        <div class="card days">
+          <div class="card-value">21/44</div>
+          <div class="card-label">Days with Coverage</div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="content">
+        <!-- Interactive Staff Table Section -->
+        <section id="table" class="section">
+          <h2>👥 Interactive Staff Payroll Breakdown</h2>
+          <p class="section-description">
+            Click column headers to sort data. Utilization calculated as
+            (Monthly Hours / (Weekly Desired × 4.3 weeks)) × 100
+          </p>
+          <div id="staff-table-container"></div>
+        </section>
+
+        <!-- Enhanced Calendar Section -->
+        <section id="calendar" class="section">
+          <h2>📅 Enhanced Visual Schedule Calendar</h2>
+          <p class="section-description">
+            Click any day to view detailed staff assignments, events, and notes.
+            Color-coded badges show staff roles and time ranges.
+          </p>
+          <div id="calendar-container"></div>
+        </section>
+
+        <!-- Insights Section -->
+        <section id="insights" class="section">
+          <h2>🔍 Key Insights & Analysis</h2>
+          <div id="insights-container"></div>
+        </section>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>
+          <strong>TIA Schedule Builder - Enhanced Payroll Analytics</strong>
+        </p>
+        <p>
+          Calculation Error Fixed: Weekly desired hours properly converted to
+          monthly (× 4.3 weeks)
+        </p>
+        <p>
+          Enhanced Features: Interactive sorting | Clickable calendar days |
+          Glass morphism design | Color-coded staff badges
+        </p>
+      </div>
+    </div>
+
+    <!-- Day Detail Modal -->
+    <div id="dayDetailModal" class="day-detail-modal">
+      <div class="day-detail-content">
+        <span class="modal-close">&times;</span>
+        <div class="day-detail-header">
+          <div class="day-detail-title" id="modalTitle">Day Details</div>
+          <div class="day-detail-date" id="modalDate">Date</div>
+        </div>
+        <div class="detail-section">
+          <h4>👥 Staff Assignments</h4>
+          <div class="staff-detail-list" id="modalStaffList"></div>
+        </div>
+        <div class="detail-section">
+          <h4>📅 Events & Notes</h4>
+          <div class="events-list" id="modalEventsList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript Modules -->
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>

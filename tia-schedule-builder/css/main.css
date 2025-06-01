@@ -1,0 +1,261 @@
+/* TIA Schedule Builder - Main Styles */
+
+/* Staff Color Mapping */
+:root {
+    --rob-color: #e74c3c;
+    --grace-color: #3498db;
+    --domingo-color: #9b59b6;
+    --athena-color: #e67e22;
+    --miranda-color: #1abc9c;
+    --taylor-color: #f39c12;
+    --gemma-color: #2ecc71;
+    --bayla-color: #34495e;
+    --morph-color: #e91e63;
+    --emilie-color: #8e44ad;
+    --cam-color: #16a085;
+    --courtney-color: #d35400;
+    --donnie-color: #7f8c8d;
+}
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Container */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    font-weight: 300;
+}
+
+.header .subtitle {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+/* Navigation */
+.navigation {
+    background: #34495e;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 15px 25px;
+    transition: background-color 0.3s;
+    border-bottom: 3px solid transparent;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: #2c3e50;
+    border-bottom-color: #3498db;
+}
+
+/* Banners */
+.correction-banner {
+    background: #d1ecf1;
+    border: 2px solid #17a2b8;
+    color: #0c5460;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Summary Cards */
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 30px;
+    background: #f8f9fa;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    text-align: center;
+    border-left: 4px solid #3498db;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.card.cost { border-left-color: #27ae60; }
+.card.hours { border-left-color: #f39c12; }
+.card.staff { border-left-color: #e74c3c; }
+.card.days { border-left-color: #9b59b6; }
+
+.card-value {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.card-label {
+    color: #7f8c8d;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Content Sections */
+.content {
+    padding: 30px;
+}
+
+.section {
+    margin-bottom: 50px;
+    scroll-margin-top: 100px; /* For smooth scrolling with fixed nav */
+}
+
+.section h2 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ecf0f1;
+    font-size: 1.8em;
+}
+
+.section-description {
+    color: #7f8c8d;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+/* Staff Badge Colors */
+.staff-rob { background: linear-gradient(135deg, var(--rob-color), #c0392b); }
+.staff-grace { background: linear-gradient(135deg, var(--grace-color), #2980b9); }
+.staff-domingo { background: linear-gradient(135deg, var(--domingo-color), #8e44ad); }
+.staff-athena { background: linear-gradient(135deg, var(--athena-color), #d35400); }
+.staff-miranda { background: linear-gradient(135deg, var(--miranda-color), #16a085); }
+.staff-taylor { background: linear-gradient(135deg, var(--taylor-color), #e67e22); }
+.staff-gemma { background: linear-gradient(135deg, var(--gemma-color), #27ae60); }
+.staff-bayla { background: linear-gradient(135deg, var(--bayla-color), #2c3e50); }
+.staff-morph { background: linear-gradient(135deg, var(--morph-color), #ad1457); }
+.staff-emilie { background: linear-gradient(135deg, var(--emilie-color), #7b1fa2); }
+.staff-cam { background: linear-gradient(135deg, var(--cam-color), #138d75); }
+.staff-courtney { background: linear-gradient(135deg, var(--courtney-color), #ba4a00); }
+.staff-donnie { background: linear-gradient(135deg, var(--donnie-color), #5d6d7e); }
+
+/* Insights */
+.insights {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 25px;
+    margin-top: 30px;
+}
+
+.insight-item {
+    margin-bottom: 15px;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+    transition: transform 0.2s;
+}
+
+.insight-item:hover {
+    transform: translateX(5px);
+}
+
+.insight-item.success { border-left-color: #27ae60; }
+.insight-item.warning { border-left-color: #f39c12; }
+.insight-item.critical { border-left-color: #e74c3c; }
+.insight-item.info { border-left-color: #17a2b8; }
+
+.insight-item h4 {
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+/* Footer */
+.footer {
+    background: #2c3e50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.footer p {
+    margin-bottom: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .summary-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .navigation {
+        flex-direction: column;
+    }
+    
+    .nav-link {
+        text-align: center;
+    }
+    
+    .content {
+        padding: 20px;
+    }
+    
+    .header h1 {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .card-value {
+        font-size: 2em;
+    }
+    
+    .section h2 {
+        font-size: 1.5em;
+    }
+}

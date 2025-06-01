@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TIA Schedule Builder - Updated June 2025 Payroll Report</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        font-weight: 300;
+      }
+
+      .header .subtitle {
+        font-size: 1.2em;
+        opacity: 0.9;
+      }
+
+      .critical-banner {
+        background: #f8d7da;
+        border: 2px solid #dc3545;
+        color: #721c24;
+        padding: 20px;
+        margin: 20px;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: bold;
+      }
+
+      .summary-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 30px;
+        background: #f8f9fa;
+      }
+
+      .card {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        border-left: 4px solid #3498db;
+      }
+
+      .card.cost {
+        border-left-color: #e74c3c;
+      }
+      .card.hours {
+        border-left-color: #f39c12;
+      }
+      .card.staff {
+        border-left-color: #27ae60;
+      }
+      .card.days {
+        border-left-color: #9b59b6;
+      }
+
+      .card-value {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 5px;
+      }
+
+      .card-label {
+        color: #7f8c8d;
+        font-size: 0.9em;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .content {
+        padding: 30px;
+      }
+
+      .section {
+        margin-bottom: 40px;
+      }
+
+      .section h2 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #ecf0f1;
+        font-size: 1.8em;
+      }
+
+      .staff-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .staff-table th {
+        background: #34495e;
+        color: white;
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+      }
+
+      .staff-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #ecf0f1;
+      }
+
+      .staff-table tr:hover {
+        background: #f8f9fa;
+      }
+
+      .staff-table .total-row {
+        background: #f8f9fa;
+        font-weight: bold;
+        border-top: 2px solid #34495e;
+      }
+
+      .utilization {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.85em;
+        font-weight: bold;
+      }
+
+      .utilization.critical {
+        background: #ffebee;
+        color: #c62828;
+      }
+      .utilization.over {
+        background: #fff3e0;
+        color: #ef6c00;
+      }
+      .utilization.good {
+        background: #e8f5e8;
+        color: #2e7d32;
+      }
+      .utilization.none {
+        background: #f5f5f5;
+        color: #757575;
+      }
+
+      .insights {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 25px;
+        margin-top: 30px;
+      }
+
+      .insight-item {
+        margin-bottom: 15px;
+        padding: 15px;
+        background: white;
+        border-radius: 8px;
+        border-left: 4px solid #3498db;
+      }
+
+      .insight-item.warning {
+        border-left-color: #f39c12;
+      }
+      .insight-item.critical {
+        border-left-color: #e74c3c;
+      }
+      .insight-item.success {
+        border-left-color: #27ae60;
+      }
+
+      .footer {
+        background: #2c3e50;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 0.9em;
+      }
+
+      @media (max-width: 768px) {
+        .summary-cards {
+          grid-template-columns: 1fr;
+        }
+
+        .staff-table {
+          font-size: 0.9em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>TIA Schedule Builder</h1>
+        <div class="subtitle">Updated June 2025 Payroll Analytics Report</div>
+      </div>
+
+      <div class="critical-banner">
+        🚨 CRITICAL STAFFING CRISIS: 10 out of 13 scheduled staff are severely
+        overworked (135-400% of desired hours)
+      </div>
+
+      <div class="summary-cards">
+        <div class="card cost">
+          <div class="card-value">$8,365</div>
+          <div class="card-label">Total Monthly Payroll</div>
+        </div>
+        <div class="card hours">
+          <div class="card-value">483</div>
+          <div class="card-label">Total Monthly Hours</div>
+        </div>
+        <div class="card staff">
+          <div class="card-value">13/16</div>
+          <div class="card-label">Staff Actually Scheduled</div>
+        </div>
+        <div class="card days">
+          <div class="card-value">21/44</div>
+          <div class="card-label">Days with Coverage</div>
+        </div>
+      </div>
+
+      <div class="content">
+        <!-- Staff Payroll Table -->
+        <div class="section">
+          <h2>👥 Complete Staff Payroll Breakdown</h2>
+          <table class="staff-table">
+            <thead>
+              <tr>
+                <th>Staff Name</th>
+                <th>Staff Type</th>
+                <th>Hourly Rate</th>
+                <th>Total Hours</th>
+                <th>Monthly Pay</th>
+                <th>Desired Hours</th>
+                <th>Utilization</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Rob</strong></td>
+                <td>Primary</td>
+                <td>$20.00</td>
+                <td>64</td>
+                <td><strong>$1,280.00</strong></td>
+                <td>20</td>
+                <td><span class="utilization critical">320%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Grace</strong></td>
+                <td>Primary</td>
+                <td>$17.00</td>
+                <td>75</td>
+                <td><strong>$1,275.00</strong></td>
+                <td>20</td>
+                <td><span class="utilization critical">375%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Domingo</strong></td>
+                <td>Primary</td>
+                <td>$25.00</td>
+                <td>48</td>
+                <td><strong>$1,200.00</strong></td>
+                <td>20</td>
+                <td><span class="utilization critical">240%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Athena</strong></td>
+                <td>Primary</td>
+                <td>$17.00</td>
+                <td>56</td>
+                <td><strong>$952.00</strong></td>
+                <td>20</td>
+                <td><span class="utilization critical">280%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Miranda</strong></td>
+                <td>Primary</td>
+                <td>$20.00</td>
+                <td>42.5</td>
+                <td><strong>$850.00</strong></td>
+                <td>20</td>
+                <td><span class="utilization critical">213%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Taylor</strong></td>
+                <td>Primary</td>
+                <td>$16.00</td>
+                <td>46</td>
+                <td><strong>$736.00</strong></td>
+                <td>20</td>
+                <td><span class="utilization critical">230%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Gemma</strong></td>
+                <td>Primary</td>
+                <td>$16.00</td>
+                <td>42</td>
+                <td><strong>$672.00</strong></td>
+                <td>20</td>
+                <td><span class="utilization critical">210%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Bayla</strong></td>
+                <td>Primary</td>
+                <td>$17.00</td>
+                <td>30</td>
+                <td><strong>$510.00</strong></td>
+                <td>20</td>
+                <td><span class="utilization over">150%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Morph</strong></td>
+                <td>Primary</td>
+                <td>$16.00</td>
+                <td>27</td>
+                <td><strong>$432.00</strong></td>
+                <td>20</td>
+                <td><span class="utilization over">135%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Emilie</strong></td>
+                <td>Primary/Volunteer (lab only)</td>
+                <td>$15.00</td>
+                <td>16</td>
+                <td><strong>$240.00</strong></td>
+                <td>20</td>
+                <td><span class="utilization good">80%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Cam</strong></td>
+                <td>Primary/Volunteer (lab only)</td>
+                <td>$15.00</td>
+                <td>14.5</td>
+                <td><strong>$217.50</strong></td>
+                <td>20</td>
+                <td><span class="utilization good">73%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Courtney</strong></td>
+                <td>Volunteer</td>
+                <td>$0.00</td>
+                <td>16</td>
+                <td><strong>$0.00</strong></td>
+                <td>4</td>
+                <td><span class="utilization critical">400%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Donnie</strong></td>
+                <td>Live-in</td>
+                <td>$0.00</td>
+                <td>6</td>
+                <td><strong>$0.00</strong></td>
+                <td>10</td>
+                <td><span class="utilization good">60%</span></td>
+              </tr>
+              <tr style="background: #f0f0f0; color: #999">
+                <td>Ruby</td>
+                <td>Primary</td>
+                <td>$15.00</td>
+                <td>0</td>
+                <td>$0.00</td>
+                <td>10</td>
+                <td><span class="utilization none">0%</span></td>
+              </tr>
+              <tr style="background: #f0f0f0; color: #999">
+                <td>Reece</td>
+                <td>Volunteer</td>
+                <td>$0.00</td>
+                <td>0</td>
+                <td>$0.00</td>
+                <td>0</td>
+                <td><span class="utilization none">0%</span></td>
+              </tr>
+              <tr style="background: #f0f0f0; color: #999">
+                <td>Emily</td>
+                <td>Volunteer</td>
+                <td>$0.00</td>
+                <td>0</td>
+                <td>$0.00</td>
+                <td>0</td>
+                <td><span class="utilization none">0%</span></td>
+              </tr>
+              <tr class="total-row">
+                <td colspan="3"><strong>TOTAL (13 staff scheduled)</strong></td>
+                <td><strong>483 hours</strong></td>
+                <td><strong>$8,364.50</strong></td>
+                <td colspan="2"><strong>Avg: $17.32/hour</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Key Insights -->
+        <div class="insights">
+          <h2 style="margin-bottom: 20px; color: #2c3e50">
+            🔍 Critical Insights & Urgent Recommendations
+          </h2>
+
+          <div class="insight-item critical">
+            <h4>🚨 CRITICAL STAFFING CRISIS</h4>
+            <p>
+              <strong
+                >10 out of 13 scheduled staff are severely overworked:</strong
+              >
+              Grace (375%), Rob (320%), Athena (280%), Domingo (240%), Taylor
+              (230%), Gemma (210%), Miranda (213%), Bayla (150%), Morph (135%),
+              and even volunteer Courtney (400%) are all working far beyond
+              sustainable levels.
+            </p>
+          </div>
+
+          <div class="insight-item warning">
+            <h4>⚠️ Massive Coverage Gaps</h4>
+            <p>
+              <strong>23 days have no staff coverage:</strong> Out of 44 total
+              days in the schedule, only 21 days have staff assigned. This
+              represents a 52% coverage gap that needs immediate attention.
+            </p>
+          </div>
+
+          <div class="insight-item critical">
+            <h4>💰 Unsustainable Financial Impact</h4>
+            <p>
+              <strong>Total monthly payroll: $8,364.50</strong> for 483 hours |
+              <strong>Average cost: $17.32/hour</strong> |
+              <strong>Top earners:</strong> Rob ($1,280), Grace ($1,275),
+              Domingo ($1,200) - all working 2.4-3.8x their desired hours
+            </p>
+          </div>
+
+          <div class="insight-item success">
+            <h4>✅ Available Resources</h4>
+            <p>
+              <strong>Only 3 staff members have reasonable utilization:</strong>
+              Emilie (80%), Cam (73%), and Donnie (60%). Ruby is completely
+              unused and could help redistribute workload. These staff could
+              take on additional hours to reduce the burden on overworked team
+              members.
+            </p>
+          </div>
+
+          <div class="insight-item critical">
+            <h4>📈 URGENT ACTION REQUIRED</h4>
+            <ul style="margin: 10px 0; padding-left: 20px">
+              <li>
+                <strong>Immediate redistribution:</strong> Move hours from 375%
+                Grace and 320% Rob to available staff
+              </li>
+              <li>
+                <strong>Utilize Ruby:</strong> Currently at 0% utilization with
+                10 desired hours available
+              </li>
+              <li>
+                <strong>Increase volunteer engagement:</strong> Reece and Emily
+                could help reduce paid staff burden
+              </li>
+              <li>
+                <strong>Fill coverage gaps:</strong> 23 days with no coverage
+                need immediate staffing
+              </li>
+              <li>
+                <strong>Prevent burnout:</strong> No staff should exceed 150% of
+                desired hours
+              </li>
+              <li>
+                <strong>Cost optimization:</strong> Better distribution could
+                maintain coverage while reducing overtime costs
+              </li>
+            </ul>
+          </div>
+
+          <div class="insight-item warning">
+            <h4>🎯 Recommended Target Distribution</h4>
+            <p>
+              <strong>Optimal utilization range: 75-125%</strong> |
+              <strong>Current crisis level:</strong> 10 staff at 135-400% |
+              <strong>Immediate goal:</strong> Redistribute 200+ hours from
+              overworked staff to available resources to achieve sustainable
+              scheduling.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>
+          <strong>TIA Schedule Builder - CRITICAL STAFFING ANALYSIS</strong>
+        </p>
+        <p>
+          Based on updated june_2025.json data | 44 days analyzed | 21 days with
+          coverage | 23 days uncovered
+        </p>
+        <p>
+          <strong>URGENT:</strong> Immediate action required to prevent staff
+          burnout and operational failure
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

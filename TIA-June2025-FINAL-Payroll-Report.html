@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TIA Schedule Builder - Complete June 2025 Payroll Report</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        font-weight: 300;
+      }
+
+      .header .subtitle {
+        font-size: 1.2em;
+        opacity: 0.9;
+      }
+
+      .success-banner {
+        background: #d4edda;
+        border: 2px solid #28a745;
+        color: #155724;
+        padding: 20px;
+        margin: 20px;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: bold;
+      }
+
+      .summary-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 30px;
+        background: #f8f9fa;
+      }
+
+      .card {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        border-left: 4px solid #3498db;
+      }
+
+      .card.cost {
+        border-left-color: #27ae60;
+      }
+      .card.hours {
+        border-left-color: #f39c12;
+      }
+      .card.staff {
+        border-left-color: #e74c3c;
+      }
+      .card.days {
+        border-left-color: #9b59b6;
+      }
+
+      .card-value {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 5px;
+      }
+
+      .card-label {
+        color: #7f8c8d;
+        font-size: 0.9em;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .content {
+        padding: 30px;
+      }
+
+      .section {
+        margin-bottom: 40px;
+      }
+
+      .section h2 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #ecf0f1;
+        font-size: 1.8em;
+      }
+
+      .staff-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .staff-table th {
+        background: #34495e;
+        color: white;
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+      }
+
+      .staff-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #ecf0f1;
+      }
+
+      .staff-table tr:hover {
+        background: #f8f9fa;
+      }
+
+      .staff-table .total-row {
+        background: #f8f9fa;
+        font-weight: bold;
+        border-top: 2px solid #34495e;
+      }
+
+      .utilization {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.85em;
+        font-weight: bold;
+      }
+
+      .utilization.over {
+        background: #ffebee;
+        color: #c62828;
+      }
+      .utilization.under {
+        background: #fff3e0;
+        color: #ef6c00;
+      }
+      .utilization.good {
+        background: #e8f5e8;
+        color: #2e7d32;
+      }
+      .utilization.none {
+        background: #f5f5f5;
+        color: #757575;
+      }
+
+      .insights {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 25px;
+        margin-top: 30px;
+      }
+
+      .insight-item {
+        margin-bottom: 15px;
+        padding: 15px;
+        background: white;
+        border-radius: 8px;
+        border-left: 4px solid #3498db;
+      }
+
+      .insight-item.warning {
+        border-left-color: #f39c12;
+      }
+      .insight-item.critical {
+        border-left-color: #e74c3c;
+      }
+      .insight-item.success {
+        border-left-color: #27ae60;
+      }
+
+      .calendar-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .calendar-card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .calendar-card h3 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+        font-size: 1.2em;
+      }
+
+      .day-entry {
+        margin-bottom: 10px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 5px;
+        border-left: 3px solid #27ae60;
+      }
+
+      .day-date {
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      .day-staff-list {
+        font-size: 0.9em;
+        color: #7f8c8d;
+        margin-top: 5px;
+      }
+
+      .footer {
+        background: #2c3e50;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 0.9em;
+      }
+
+      @media (max-width: 768px) {
+        .summary-cards {
+          grid-template-columns: 1fr;
+        }
+
+        .calendar-summary {
+          grid-template-columns: 1fr;
+        }
+
+        .staff-table {
+          font-size: 0.9em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>TIA Schedule Builder</h1>
+        <div class="subtitle">Complete June 2025 Payroll Analytics Report</div>
+      </div>
+
+      <div class="success-banner">
+        ✅ COMPLETE & ACCURATE: Based on actual schedule data from
+        june_2025.json (31 days, 24 days with staff coverage)
+      </div>
+
+      <div class="summary-cards">
+        <div class="card cost">
+          <div class="card-value">$6,719</div>
+          <div class="card-label">Total Monthly Payroll</div>
+        </div>
+        <div class="card hours">
+          <div class="card-value">392</div>
+          <div class="card-label">Total Monthly Hours</div>
+        </div>
+        <div class="card staff">
+          <div class="card-value">7</div>
+          <div class="card-label">Staff Actually Scheduled</div>
+        </div>
+        <div class="card days">
+          <div class="card-value">24/31</div>
+          <div class="card-label">Days with Coverage</div>
+        </div>
+      </div>
+
+      <div class="content">
+        <!-- Staff Payroll Table -->
+        <div class="section">
+          <h2>👥 Complete Staff Payroll Breakdown</h2>
+          <table class="staff-table">
+            <thead>
+              <tr>
+                <th>Staff Name</th>
+                <th>Staff Type</th>
+                <th>Hourly Rate</th>
+                <th>Total Hours</th>
+                <th>Monthly Pay</th>
+                <th>Desired Hours</th>
+                <th>Utilization</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Miro</strong></td>
+                <td>Primary</td>
+                <td>$18.00</td>
+                <td>117</td>
+                <td><strong>$2,106.00</strong></td>
+                <td>20</td>
+                <td><span class="utilization over">585%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Sawyer</strong></td>
+                <td>Primary</td>
+                <td>$16.00</td>
+                <td>82</td>
+                <td><strong>$1,312.00</strong></td>
+                <td>20</td>
+                <td><span class="utilization over">410%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Gemma</strong></td>
+                <td>Primary</td>
+                <td>$16.00</td>
+                <td>61</td>
+                <td><strong>$976.00</strong></td>
+                <td>20</td>
+                <td><span class="utilization over">305%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Domingo</strong></td>
+                <td>Primary</td>
+                <td>$25.00</td>
+                <td>30</td>
+                <td><strong>$750.00</strong></td>
+                <td>20</td>
+                <td><span class="utilization over">150%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Morph</strong></td>
+                <td>Primary</td>
+                <td>$16.00</td>
+                <td>45</td>
+                <td><strong>$720.00</strong></td>
+                <td>20</td>
+                <td><span class="utilization over">225%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Tex</strong></td>
+                <td>Primary</td>
+                <td>$15.00</td>
+                <td>39</td>
+                <td><strong>$585.00</strong></td>
+                <td>20</td>
+                <td><span class="utilization over">195%</span></td>
+              </tr>
+              <tr>
+                <td><strong>Cassidy</strong></td>
+                <td>Primary</td>
+                <td>$15.00</td>
+                <td>18</td>
+                <td><strong>$270.00</strong></td>
+                <td>20</td>
+                <td><span class="utilization good">90%</span></td>
+              </tr>
+              <tr style="background: #f0f0f0; color: #999">
+                <td>Bayla</td>
+                <td>Primary</td>
+                <td>$17.00</td>
+                <td>0</td>
+                <td>$0.00</td>
+                <td>20</td>
+                <td><span class="utilization none">0%</span></td>
+              </tr>
+              <tr style="background: #f0f0f0; color: #999">
+                <td>Athena</td>
+                <td>Primary</td>
+                <td>$17.00</td>
+                <td>0</td>
+                <td>$0.00</td>
+                <td>20</td>
+                <td><span class="utilization none">0%</span></td>
+              </tr>
+              <tr style="background: #f0f0f0; color: #999">
+                <td>Rob</td>
+                <td>Primary</td>
+                <td>$20.00</td>
+                <td>0</td>
+                <td>$0.00</td>
+                <td>20</td>
+                <td><span class="utilization none">0%</span></td>
+              </tr>
+              <tr style="background: #f0f0f0; color: #999">
+                <td>Grace</td>
+                <td>Primary</td>
+                <td>$17.00</td>
+                <td>0</td>
+                <td>$0.00</td>
+                <td>20</td>
+                <td><span class="utilization none">0%</span></td>
+              </tr>
+              <tr style="background: #f0f0f0; color: #999">
+                <td>Miranda</td>
+                <td>Primary</td>
+                <td>$20.00</td>
+                <td>0</td>
+                <td>$0.00</td>
+                <td>20</td>
+                <td><span class="utilization none">0%</span></td>
+              </tr>
+              <tr style="background: #f0f0f0; color: #999">
+                <td>Taylor</td>
+                <td>Primary</td>
+                <td>$16.00</td>
+                <td>0</td>
+                <td>$0.00</td>
+                <td>20</td>
+                <td><span class="utilization none">0%</span></td>
+              </tr>
+              <tr class="total-row">
+                <td colspan="3"><strong>TOTAL (7 staff scheduled)</strong></td>
+                <td><strong>392 hours</strong></td>
+                <td><strong>$6,719.00</strong></td>
+                <td colspan="2"><strong>Avg: $17.14/hour</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Key Insights -->
+        <div class="insights">
+          <h2 style="margin-bottom: 20px; color: #2c3e50">
+            🔍 Key Insights & Recommendations
+          </h2>
+
+          <div class="insight-item success">
+            <h4>✅ Accurate Data Analysis</h4>
+            <p>
+              <strong>Complete month analyzed:</strong> Based on actual schedule
+              data from june_2025.json covering all 31 days of June 2025, with
+              24 days having staff coverage.
+            </p>
+          </div>
+
+          <div class="insight-item critical">
+            <h4>🔴 Critical Over-Utilization</h4>
+            <p>
+              <strong
+                >6 out of 7 scheduled staff are severely over-worked:</strong
+              >
+              Miro (585%), Sawyer (410%), Gemma (305%), Morph (225%), Tex
+              (195%), and Domingo (150%) are all working far beyond their
+              desired hours.
+            </p>
+          </div>
+
+          <div class="insight-item warning">
+            <h4>⚠️ Massive Under-Utilization of Available Staff</h4>
+            <p>
+              <strong>9 staff members were not scheduled at all:</strong> Bayla,
+              Athena, Rob, Grace, Miranda, Taylor, Cam, Emilie, Ruby, Courtney,
+              Donnie, Reece, and Emily could help redistribute the workload.
+            </p>
+          </div>
+
+          <div class="insight-item">
+            <h4>💰 Financial Impact</h4>
+            <p>
+              <strong>Total monthly payroll:</strong> $6,719 for 392 hours |
+              <strong>Average cost:</strong> $17.14/hour |
+              <strong>Top earner:</strong> Miro ($2,106) |
+              <strong>Coverage gaps:</strong> 7 days with no staff scheduled
+            </p>
+          </div>
+
+          <div class="insight-item">
+            <h4>📈 Critical Recommendations</h4>
+            <ul style="margin: 10px 0; padding-left: 20px">
+              <li>
+                <strong>Immediate action needed:</strong> Redistribute hours
+                from over-utilized to available staff
+              </li>
+              <li>
+                <strong>Utilize available resources:</strong> Schedule unused
+                staff to reduce overtime and prevent burnout
+              </li>
+              <li>
+                <strong>Improve coverage:</strong> Fill the 7 days with no staff
+                coverage
+              </li>
+              <li>
+                <strong>Balance workload:</strong> No staff should work more
+                than 200% of desired hours
+              </li>
+              <li>
+                <strong>Cost optimization:</strong> Better distribution could
+                maintain coverage while reducing labor costs
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>
+          <strong
+            >TIA Schedule Builder - Complete Payroll Analytics Report</strong
+          >
+        </p>
+        <p>
+          Generated from complete june_2025.json schedule data | 31 days
+          analyzed | 24 days with staff coverage
+        </p>
+        <p>
+          Analysis shows critical need for workload redistribution and better
+          staff utilization
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

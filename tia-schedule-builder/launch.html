@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIA Schedule Builder - Launcher</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .launcher {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 600px;
+            text-align: center;
+        }
+        
+        .launcher h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .launcher .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .options {
+            display: grid;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .option {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .option:hover {
+            border-color: #3498db;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .option.recommended {
+            border-color: #27ae60;
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+        }
+        
+        .option.recommended::before {
+            content: "⭐ RECOMMENDED";
+            display: block;
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+        }
+        
+        .option h3 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+            font-size: 1.3em;
+        }
+        
+        .option p {
+            margin: 0;
+            color: #7f8c8d;
+            line-height: 1.5;
+        }
+        
+        .option .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .instructions {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: left;
+        }
+        
+        .instructions h4 {
+            color: #1976d2;
+            margin-top: 0;
+        }
+        
+        .instructions ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 5px;
+            color: #424242;
+        }
+        
+        .warning {
+            background: #fff3e0;
+            border: 1px solid #ffcc02;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            color: #e65100;
+        }
+        
+        .warning strong {
+            color: #bf360c;
+        }
+        
+        @media (max-width: 768px) {
+            .launcher {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .launcher h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="launcher">
+        <h1>🚀 TIA Schedule Builder</h1>
+        <p class="subtitle">Choose how you'd like to run the application</p>
+        
+        <div class="options">
+            <div class="option recommended" onclick="showServerInstructions()">
+                <span class="icon">🖥️</span>
+                <h3>Full Version (Local Server)</h3>
+                <p>Complete functionality with interactive tables, calendar, and modals. Requires running a local server to avoid CORS issues.</p>
+            </div>
+            
+            <a href="index-standalone.html" class="option">
+                <span class="icon">📄</span>
+                <h3>Standalone Version</h3>
+                <p>Limited functionality that works directly from file system. Good for quick viewing but missing interactive features.</p>
+            </a>
+            
+            <a href="reports/detailed-analysis.html" class="option">
+                <span class="icon">📊</span>
+                <h3>Detailed Analysis Report</h3>
+                <p>Comprehensive analysis and insights. Works without server setup.</p>
+            </a>
+        </div>
+        
+        <div class="instructions" id="serverInstructions" style="display: none;">
+            <h4>🛠️ Quick Server Setup</h4>
+            <p><strong>Choose one method:</strong></p>
+            
+            <div style="margin: 15px 0;">
+                <strong>Method 1 - Windows Batch File:</strong>
+                <ol>
+                    <li>Double-click <code>start-server.bat</code></li>
+                    <li>Wait for server to start</li>
+                    <li>Browser opens automatically to <code>http://localhost:8000</code></li>
+                </ol>
+            </div>
+            
+            <div style="margin: 15px 0;">
+                <strong>Method 2 - PowerShell (Windows):</strong>
+                <ol>
+                    <li>Right-click <code>start-server.ps1</code> → "Run with PowerShell"</li>
+                    <li>Follow the on-screen instructions</li>
+                </ol>
+            </div>
+            
+            <div style="margin: 15px 0;">
+                <strong>Method 3 - Command Line:</strong>
+                <ol>
+                    <li>Open terminal/command prompt in this folder</li>
+                    <li>Run: <code>python -m http.server 8000</code></li>
+                    <li>Open browser to: <code>http://localhost:8000</code></li>
+                </ol>
+            </div>
+            
+            <div style="margin: 15px 0;">
+                <strong>Method 4 - VS Code:</strong>
+                <ol>
+                    <li>Install "Live Server" extension</li>
+                    <li>Right-click <code>index.html</code> → "Open with Live Server"</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="warning">
+            <strong>⚠️ CORS Issue Explanation:</strong><br>
+            Modern browsers block ES6 module imports when opening HTML files directly (file:// protocol). 
+            The full version requires a local HTTP server to function properly. The standalone version 
+            bundles everything to work around this limitation but has reduced functionality.
+        </div>
+    </div>
+    
+    <script>
+        function showServerInstructions() {
+            const instructions = document.getElementById('serverInstructions');
+            if (instructions.style.display === 'none') {
+                instructions.style.display = 'block';
+                instructions.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                instructions.style.display = 'none';
+            }
+        }
+        
+        // Auto-detect if we're running from a server
+        if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+            // We're already running from a server, redirect to main app
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+            
+            document.body.innerHTML = `
+                <div class="launcher">
+                    <h1>🎉 Server Detected!</h1>
+                    <p class="subtitle">Redirecting to the full TIA Schedule Builder application...</p>
+                    <div style="margin: 30px 0;">
+                        <div style="font-size: 3em;">⏳</div>
+                        <p>If you're not redirected automatically, <a href="index.html">click here</a>.</p>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

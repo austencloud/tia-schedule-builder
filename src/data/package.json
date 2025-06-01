@@ -1,0 +1,17 @@
+{
+  "name": "museum-schedule-visualization",
+  "version": "1.0.0",
+  "description": "Museum staffing schedule visualization with Svelte 5 and glassmorphism design",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "svelte": "^5.0.0",
+    "vite": "^5.0.0"
+  },
+  "dependencies": {}
+}

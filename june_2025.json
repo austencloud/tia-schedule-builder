@@ -1,0 +1,1455 @@
+[
+  {
+    "date": "2025-06-01",
+    "day": "Sunday",
+    "availability": [
+      {
+        "name": "morph",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "grace",
+        "start": 11,
+        "end": 5
+      },
+      {
+        "name": "gemma",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "domingo",
+        "start": 11,
+        "end": 8
+      }
+    ],
+    "unavailable": [
+      "Taylor, Rob, Miranda "
+    ],
+    "staffed": [
+      "grace 11-5, ",
+      "gemma 11-8",
+      "morph if youd like to come in at 5 and work 5-8 you can and gemma if you want to leave early (after 5) you may do so- sorry for the late notice"
+    ],
+    "event": null,
+    "event_time": null,
+    "location": null,
+    "eventbrite": null
+  },
+  {
+    "date": "2025-06-02",
+    "day": "Monday",
+    "availability": [
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "emilie",
+        "start": 11,
+        "end": 8
+      }
+    ],
+    "unavailable": [
+      "domingo"
+    ],
+    "staffed": [
+      "rob & emily animal care"
+    ],
+    "event": null,
+    "event_time": null,
+    "location": null,
+    "eventbrite": null
+  },
+  {
+    "date": "2025-06-03",
+    "day": "Tuesday",
+    "availability": [
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "miranda",
+        "start": null,
+        "end": null
+      },
+      {
+        "name": "emilie",
+        "start": 11,
+        "end": 8
+      }
+    ],
+    "unavailable": [
+      "domingo"
+    ],
+    "staffed": [
+      "rob & miranda animal care"
+    ],
+    "event": "Cat Jam",
+    "event_time": "7:00 pm - 10:00 pm",
+    "location": "museum",
+    "eventbrite": "https://www.eventbrite.com/e/1110905059939?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-04",
+    "day": "Wednesday",
+    "availability": [
+      {
+        "name": "domingo",
+        "start": 3,
+        "end": 8
+      },
+      {
+        "name": "morph",
+        "start": 3,
+        "end": 8
+      },
+      {
+        "name": "grace",
+        "start": 1,
+        "end": 8
+      },
+      {
+        "name": "gemma",
+        "start": 11,
+        "end": 5
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "cam",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "emilie",
+        "start": 11,
+        "end": 5
+      }
+    ],
+    "unavailable": [
+      "Miranda"
+    ],
+    "staffed": [
+      "gemma 1-5,",
+      "grace 3-8",
+      "lab  Athena 9:30-3 (have gemma train you in animal care when they arrive at 1), "
+    ],
+    "event": null,
+    "event_time": null,
+    "location": null,
+    "eventbrite": null
+  },
+  {
+    "date": "2025-06-05",
+    "day": "Thursday",
+    "availability": [
+      {
+        "name": "domingo",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "morph",
+        "start": 11,
+        "end": 6
+      },
+      {
+        "name": "taylor",
+        "start": 11,
+        "end": 4
+      },
+      {
+        "name": "grace",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 5
+      },
+      {
+        "name": "miranda",
+        "start": 11,
+        "end": 5
+      },
+      {
+        "name": "emilie",
+        "start": 11,
+        "end": 5
+      }
+    ],
+    "unavailable": [
+      "Gemma"
+    ],
+    "staffed": [
+      "taylor 11-4",
+      "grace 3-8",
+      "TBD: Domingo for student group",
+      "Lab: Bayla 11-5 (have taylor train you in animal care)"
+    ],
+    "event": "student group visit, 20 students? - not on calendar, confirming with carla",
+    "event_time": "11-12:30 pm",
+    "location": "museum",
+    "eventbrite": null
+  },
+  {
+    "date": "2025-06-06",
+    "day": "Friday",
+    "availability": [
+      {
+        "name": "domingo",
+        "start": 3,
+        "end": 8
+      },
+      {
+        "name": "morph",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "taylor",
+        "start": 11,
+        "end": 4
+      },
+      {
+        "name": "grace",
+        "start": 1,
+        "end": 5
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 5
+      },
+      {
+        "name": "miranda",
+        "start": 11,
+        "end": 5
+      }
+    ],
+    "unavailable": [
+      "Bayla, Emilie "
+    ],
+    "staffed": [
+      "miranda 11-5 ",
+      "taylor 11-4",
+      "domingo 3-8"
+    ],
+    "event": "Sensory Friendly Friday",
+    "event_time": "11:00 am - 3:00 pm",
+    "location": "museum",
+    "eventbrite": "https://www.eventbrite.com/e/1110888309839?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-07",
+    "day": "Saturday",
+    "availability": [
+      {
+        "name": "morph",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "gemma",
+        "start": 11,
+        "end": 5
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 6
+      },
+      {
+        "name": "miranda",
+        "start": 11,
+        "end": 2
+      }
+    ],
+    "unavailable": [
+      "Bayla, domingo pending (RIP vending), Grace, Emilie "
+    ],
+    "staffed": [
+      "Rob 9:30-3 (offsite), ",
+      "gemma 11-5, ",
+      "Morph 5-8",
+      "labathena 11-4- cover desk or introduce kids to elvis for birthday meet and greet if donnie isnt avalible",
+      "donnie is going to try to come home for the meet and greet, the birthday boy can give elvis a hazlenut, all others can give him one nutraberry(round seed ball) you guys can ask him to dance or show big like eagel wings, or throw the orange ball up in the air for him, he loves that) - this is a free quick engagment to add something special to the day, dont try to let the kids pet him."
+    ],
+    "event": "Animal exibit at the jesus people shelter block party 10am-2pm",
+    "event_time": null,
+    "location": "west town- 30 min drive",
+    "eventbrite": null
+  },
+  {
+    "date": "2025-06-07",
+    "day": "Saturday",
+    "availability": [],
+    "unavailable": [],
+    "staffed": [],
+    "event": "7 year old birthday meeting with elvis -3pm ish",
+    "event_time": null,
+    "location": "museum",
+    "eventbrite": null
+  },
+  {
+    "date": "2025-06-08",
+    "day": "Sunday",
+    "availability": [
+      {
+        "name": "domingo",
+        "start": null,
+        "end": null
+      },
+      {
+        "name": "morph",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "courtney",
+        "start": 12,
+        "end": 3
+      },
+      {
+        "name": "grace",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "gemma",
+        "start": 11,
+        "end": 8
+      }
+    ],
+    "unavailable": [
+      "Bayla, Rob, Emilie "
+    ],
+    "staffed": [
+      "Courtney 12-3 (please make butterfly kits and see which others we're low on)",
+      "grace 4-8 ",
+      "gemma 11-4, ",
+      "doming 10:30-6:30 (The alley event)"
+    ],
+    "event": "Tabling event- the alley chicago 10:30am-6pm",
+    "event_time": null,
+    "location": "The alley chicago- 10 min drive",
+    "eventbrite": "https://www.eventbrite.com/e/sensory-seeking-sunday-tickets-1110970214819?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-09",
+    "day": "Monday",
+    "availability": [
+      {
+        "name": "taylor",
+        "start": 11,
+        "end": 4
+      },
+      {
+        "name": "grace",
+        "start": null,
+        "end": null
+      },
+      {
+        "name": "miranda",
+        "start": null,
+        "end": null
+      },
+      {
+        "name": "emily",
+        "start": null,
+        "end": null
+      },
+      {
+        "name": "cam",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "emilie",
+        "start": 11,
+        "end": 8
+      }
+    ],
+    "unavailable": [
+      "domingo, Rob, Emilie "
+    ],
+    "staffed": [
+      "am taylor and grace animal care",
+      "cam training"
+    ],
+    "event": null,
+    "event_time": null,
+    "location": null,
+    "eventbrite": null
+  },
+  {
+    "date": "2025-06-10",
+    "day": "Tuesday",
+    "availability": [
+      {
+        "name": "taylor",
+        "start": 11,
+        "end": 4
+      },
+      {
+        "name": "miranda",
+        "start": null,
+        "end": null
+      }
+    ],
+    "unavailable": [
+      "domingo, Grace, Rob, Emilie "
+    ],
+    "staffed": [
+      "taylor and miranda animal care"
+    ],
+    "event": "Cat Jam",
+    "event_time": "7:00 pm - 10:00 pm",
+    "location": "museum",
+    "eventbrite": "https://www.eventbrite.com/e/1110905059939?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-11",
+    "day": "Wednesday",
+    "availability": [
+      {
+        "name": "domingo",
+        "start": 3,
+        "end": 8
+      },
+      {
+        "name": "morph",
+        "start": 3,
+        "end": 8
+      },
+      {
+        "name": "taylor",
+        "start": 1,
+        "end": 4
+      },
+      {
+        "name": "grace",
+        "start": 1,
+        "end": 8
+      },
+      {
+        "name": "gemma",
+        "start": 11,
+        "end": 5
+      }
+    ],
+    "unavailable": [
+      "Rob, Miranda, Emilie "
+    ],
+    "staffed": [
+      "Athena 9:30-3 (please do the daily animal care at some point either before you lab or after prior to the museum opening) - if your struggling, grace and domingo are both in at 3 and can assist.",
+      "Grace 3-8, ",
+      "domingo 3-5"
+    ],
+    "event": "Community Day",
+    "event_time": "3:00 pm - 8:00 pm",
+    "location": "museum",
+    "eventbrite": "https://www.eventbrite.com/e/community-day-12-off-admission-tickets-1110805080899?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-11",
+    "day": "Wednesday",
+    "availability": [],
+    "unavailable": [],
+    "staffed": [],
+    "event": "lunar intention vial workshop",
+    "event_time": "2025-03-04 00:00:00",
+    "location": "classroom",
+    "eventbrite": "https://www.eventbrite.com/e/1210115801939?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-12",
+    "day": "Thursday",
+    "availability": [
+      {
+        "name": "domingo",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "morph",
+        "start": 11,
+        "end": 6
+      },
+      {
+        "name": "taylor",
+        "start": 11,
+        "end": 4
+      },
+      {
+        "name": "grace",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "gemma",
+        "start": 4,
+        "end": 8
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 5
+      },
+      {
+        "name": "miranda",
+        "start": null,
+        "end": null
+      }
+    ],
+    "unavailable": [
+      "Domingo, Emilie "
+    ],
+    "staffed": [
+      "Rob 11-4 (animal care and lab) freezer inventory- basment",
+      "athena 11-4(animal care and lab)  freezer inventory- basment",
+      "Cam 12-4 (lab) freezer inventory- basment",
+      "bayla 4-8 (lab) freezer inventory- upstairs hallway ",
+      "morph 11-3",
+      "Miranda 4:30-8",
+      "Grace 3-8"
+    ],
+    "event": "byob opossum paint and sip",
+    "event_time": "6-8:30",
+    "location": "classroom",
+    "eventbrite": "https://www.eventbrite.com/e/marsupial-masterpiece-opossum-paint-and-sip-21-byob-tickets-1369102054099?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-13",
+    "day": "Friday",
+    "availability": [
+      {
+        "name": "domingo",
+        "start": 3,
+        "end": 8
+      },
+      {
+        "name": "morph",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "grace",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 5
+      },
+      {
+        "name": "miranda",
+        "start": 11,
+        "end": 2
+      },
+      {
+        "name": "emilie",
+        "start": 11,
+        "end": 5
+      }
+    ],
+    "unavailable": [],
+    "staffed": [
+      "Rob 11-5, help upfront for animal care then head to lab, upstairs from 2-3 ",
+      "Miranda 11-2, ",
+      "emilie 2-5 desk trainng and pinning kits w/ domingo and rob",
+      "Grace 3-8, ",
+      "domingo 3-8 (teach Rob how to cut and construct pinning kits)"
+    ],
+    "event": "Sensory Friendly Friday",
+    "event_time": "11:00 am - 3:00 pm",
+    "location": "museum",
+    "eventbrite": "https://www.eventbrite.com/e/1110888309839?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-13",
+    "day": "Friday",
+    "availability": [],
+    "unavailable": [],
+    "staffed": [],
+    "event": "private gemma blue jewel beetle bachlorette (6 total)",
+    "event_time": "3-5 pm",
+    "location": "classroom",
+    "eventbrite": null
+  },
+  {
+    "date": "2025-06-14",
+    "day": "Saturday",
+    "availability": [
+      {
+        "name": "bayla",
+        "start": null,
+        "end": null
+      },
+      {
+        "name": "morph",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "rob",
+        "start": 2,
+        "end": 8
+      },
+      {
+        "name": "miranda",
+        "start": 1,
+        "end": 6
+      },
+      {
+        "name": "cam",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "emilie",
+        "start": 11,
+        "end": 5
+      }
+    ],
+    "unavailable": [
+      "Gemma, domingo vending, Taylor, Grace "
+    ],
+    "staffed": [
+      "Morph- 11-6 (animal care and desk)",
+      "athena 11-4 (animal care and articulation class assistant),",
+      "cam 6-8:30ish front desk and closing traing",
+      "rob 4-8 (you may come in early to obseve the articulation class)",
+      "Bayla 10-5 articulation class prep and assisting"
+    ],
+    "event": "Squirrel Skeleton Articulation Class",
+    "event_time": "11-6 pm",
+    "location": "classroom",
+    "eventbrite": "https://www.eventbrite.com/e/squirrel-skeleton-articulation-class-tickets-1263566664909?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-15",
+    "day": "Sunday",
+    "availability": [
+      {
+        "name": "morph",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "courtney",
+        "start": 11,
+        "end": 3
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "emilie",
+        "start": 11,
+        "end": 8
+      }
+    ],
+    "unavailable": [
+      "domingo, Grace, Miranda , Gemma "
+    ],
+    "staffed": [
+      "Courtney 11-3",
+      "morph 4-8",
+      "Rob 11-4",
+      "emilie 6-8ish closing training",
+      "ari 6-8"
+    ],
+    "event": "Father's Day Discounted Admission day - $15 each father figure",
+    "event_time": "11-8 pm",
+    "location": "museum",
+    "eventbrite": "https://www.eventbrite.com/e/fathers-day-discounted-admission-tickets-1369700704679?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-15",
+    "day": "Sunday",
+    "availability": [],
+    "unavailable": [],
+    "staffed": [],
+    "event": "Father's Day Opossum Paint and Sip",
+    "event_time": "6-8 pm",
+    "location": "classroom",
+    "eventbrite": "https://www.eventbrite.com/e/fathers-day-marsupial-masterpiece-opossum-paint-and-sip-21-byob-tickets-1369072656169?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-16",
+    "day": "Monday",
+    "availability": [
+      {
+        "name": "taylor",
+        "start": 11,
+        "end": 4
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 4
+      },
+      {
+        "name": "miranda",
+        "start": null,
+        "end": null
+      },
+      {
+        "name": "emilie",
+        "start": 11,
+        "end": 8
+      }
+    ],
+    "unavailable": [
+      "domingo, Grace"
+    ],
+    "staffed": [
+      "Emilie and rob animal care"
+    ],
+    "event": null,
+    "event_time": null,
+    "location": null,
+    "eventbrite": null
+  },
+  {
+    "date": "2025-06-17",
+    "day": "Tuesday",
+    "availability": [
+      {
+        "name": "taylor",
+        "start": 11,
+        "end": 4
+      },
+      {
+        "name": "grace",
+        "start": null,
+        "end": null
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 4
+      }
+    ],
+    "unavailable": [
+      "domingo, Emilie "
+    ],
+    "staffed": [
+      "taylor and grace animal care"
+    ],
+    "event": "Cat Jam",
+    "event_time": "7:00 pm - 10:00 pm",
+    "location": "museum",
+    "eventbrite": "https://www.eventbrite.com/e/1110905059939?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-18",
+    "day": "Wednesday",
+    "availability": [
+      {
+        "name": "domingo",
+        "start": 3,
+        "end": 8
+      },
+      {
+        "name": "morph",
+        "start": 3,
+        "end": 8
+      },
+      {
+        "name": "taylor",
+        "start": 1,
+        "end": 4
+      },
+      {
+        "name": "grace",
+        "start": 1,
+        "end": 8
+      },
+      {
+        "name": "gemma",
+        "start": 11,
+        "end": 5
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 5
+      }
+    ],
+    "unavailable": [
+      "Miranda, Emilie"
+    ],
+    "staffed": [
+      "Rob 11-4 lab / animal care prior to 3pm",
+      "athena 9:30-3 lab / animal care prior to 3pm",
+      "domingo 3-8"
+    ],
+    "event": null,
+    "event_time": null,
+    "location": null,
+    "eventbrite": null
+  },
+  {
+    "date": "2025-06-19",
+    "day": "Thursday",
+    "availability": [
+      {
+        "name": "domingo",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "morph",
+        "start": 11,
+        "end": 6
+      },
+      {
+        "name": "taylor",
+        "start": 11,
+        "end": 4
+      },
+      {
+        "name": "grace",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "gemma",
+        "start": 4,
+        "end": 8
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 5
+      },
+      {
+        "name": "miranda",
+        "start": 11,
+        "end": 6
+      }
+    ],
+    "unavailable": [
+      "Emilie"
+    ],
+    "staffed": [
+      "Grace 11-3",
+      "Taylor 11-4, ",
+      "domingo 3-8",
+      "Lab: athena, bayla, cam 4-8"
+    ],
+    "event": null,
+    "event_time": null,
+    "location": null,
+    "eventbrite": null
+  },
+  {
+    "date": "2025-06-20",
+    "day": "Friday",
+    "availability": [
+      {
+        "name": "domingo",
+        "start": 3,
+        "end": 8
+      },
+      {
+        "name": "morph",
+        "start": 11,
+        "end": 5
+      },
+      {
+        "name": "taylor",
+        "start": 11,
+        "end": 4
+      },
+      {
+        "name": "grace",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 5
+      },
+      {
+        "name": "miranda",
+        "start": 2,
+        "end": 8
+      }
+    ],
+    "unavailable": [
+      "Emilie"
+    ],
+    "staffed": [
+      "Taylor 11-4, ",
+      "Grace 11-4, ",
+      "Miranda 5-8, ",
+      "domingo 3-8",
+      "Field study:",
+      "Gemma 5-11,  ",
+      "athena and bayla 6:30-11 pm- this may fluxuate based on #of attendees"
+    ],
+    "event": "Sensory Friendly Friday",
+    "event_time": "11:00 am - 3:00 pm",
+    "location": "museum",
+    "eventbrite": "https://www.eventbrite.com/e/1110888309839?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-20",
+    "day": "Friday",
+    "availability": [],
+    "unavailable": [],
+    "staffed": [],
+    "event": "byob opossum paint and sip",
+    "event_time": "6-8:30",
+    "location": "classroom",
+    "eventbrite": "https://www.eventbrite.com/e/marsupial-masterpiece-opossum-paint-and-sip-21-byob-tickets-1369118352849?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-20",
+    "day": "Friday",
+    "availability": [],
+    "unavailable": [],
+    "staffed": [],
+    "event": "Summer Solstice Nature Field Study (need 6 students to break even)",
+    "event_time": "7-11pm",
+    "location": "meet at museum then transport to peterson park",
+    "eventbrite": "https://www.eventbrite.com/e/solstice-glow-field-study-after-dark-tickets-1376857510879?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-21",
+    "day": "Saturday",
+    "availability": [
+      {
+        "name": "morph",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "grace",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "miranda",
+        "start": 11,
+        "end": 4
+      }
+    ],
+    "unavailable": [
+      "Bayla, Emilie"
+    ],
+    "staffed": [
+      "Morph 11-4, ",
+      "Athena 11-3, animal care/ lab",
+      "Grace 3-8, ",
+      "Rob 2-8 (classes)"
+    ],
+    "event": "Butterfly Pinning Workshop",
+    "event_time": "3-4 pm",
+    "location": "classroom",
+    "eventbrite": "https://www.eventbrite.com/e/1110986162519?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-21",
+    "day": "Saturday",
+    "availability": [],
+    "unavailable": [],
+    "staffed": [],
+    "event": "Beetle Pinning Workshop",
+    "event_time": "5-7 pm",
+    "location": "classroom",
+    "eventbrite": "https://www.eventbrite.com/e/beetle-pinning-workshop-3rd-saturday-of-the-month-tickets-1111020705839?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-22",
+    "day": "Sunday",
+    "availability": [
+      {
+        "name": "morph",
+        "start": 2,
+        "end": 8
+      },
+      {
+        "name": "grace",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "rob",
+        "start": 3,
+        "end": 8
+      }
+    ],
+    "unavailable": [
+      "Bayla, domingo, Gemma, Miranda, Emilie "
+    ],
+    "staffed": [
+      "grace 11-8.",
+      "Rob 3-8, (teaching)",
+      "Taylor 5-11 pm (tabling event)",
+      "morph or donnie 5-11pm (tabling event)"
+    ],
+    "event": "Midsummer Gardening Workshop",
+    "event_time": "2-3 pm",
+    "location": "upstairs",
+    "eventbrite": "https://www.eventbrite.com/e/midsummer-gardening-workshop-tickets-1391153249819?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-22",
+    "day": "Sunday",
+    "availability": [],
+    "unavailable": [],
+    "staffed": [],
+    "event": "Gathering of the goddesses tabling sleeping village - femme oriented event",
+    "event_time": "6-11 pm",
+    "location": "sleeping village",
+    "eventbrite": null
+  },
+  {
+    "date": "2025-06-22",
+    "day": "Sunday",
+    "availability": [],
+    "unavailable": [],
+    "staffed": [],
+    "event": "Cicada pinning workshop",
+    "event_time": "2025-04-05 00:00:00",
+    "location": "Classroom",
+    "eventbrite": "https://www.eventbrite.com/e/cicada-pinning-workshop-tickets-1376461426179?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-23",
+    "day": "Monday",
+    "availability": [
+      {
+        "name": "taylor",
+        "start": 11,
+        "end": 4
+      },
+      {
+        "name": "grace",
+        "start": null,
+        "end": null
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 4
+      },
+      {
+        "name": "emilie",
+        "start": 11,
+        "end": 8
+      }
+    ],
+    "unavailable": [
+      "domingo, Gemma "
+    ],
+    "staffed": [
+      "emilie and grace animal care"
+    ],
+    "event": null,
+    "event_time": null,
+    "location": null,
+    "eventbrite": null
+  },
+  {
+    "date": "2025-06-24",
+    "day": "Tuesday",
+    "availability": [
+      {
+        "name": "taylor",
+        "start": 11,
+        "end": 4
+      },
+      {
+        "name": "grace",
+        "start": null,
+        "end": null
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 4
+      },
+      {
+        "name": "miranda",
+        "start": null,
+        "end": null
+      },
+      {
+        "name": "emily",
+        "start": null,
+        "end": null
+      },
+      {
+        "name": "cam",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "emilie",
+        "start": 11,
+        "end": 8
+      }
+    ],
+    "unavailable": [
+      "domingo, Gemma "
+    ],
+    "staffed": [
+      "taylor and cam animal care"
+    ],
+    "event": "Cat Jam",
+    "event_time": "7:00 pm - 10:00 pm",
+    "location": "museum",
+    "eventbrite": "https://www.eventbrite.com/e/1110905059939?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-25",
+    "day": "Wednesday",
+    "availability": [
+      {
+        "name": "domingo",
+        "start": 3,
+        "end": 8
+      },
+      {
+        "name": "morph",
+        "start": 2,
+        "end": 8
+      },
+      {
+        "name": "taylor",
+        "start": 1,
+        "end": 4
+      },
+      {
+        "name": "grace",
+        "start": 1,
+        "end": 8
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 1
+      },
+      {
+        "name": "emilie",
+        "start": 11,
+        "end": 8
+      }
+    ],
+    "unavailable": [
+      "Gemma, Miranda "
+    ],
+    "staffed": [
+      "domingo 3-8, ",
+      "grace 3-8",
+      "athena 9:30-3 lab/ animal care prior to museum open- if your pressed for time grace can do animal care at 3"
+    ],
+    "event": "Community Day",
+    "event_time": "3:00 pm - 8:00 pm",
+    "location": "museum",
+    "eventbrite": "https://www.eventbrite.com/e/community-day-12-off-admission-tickets-1110807106959?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-26",
+    "day": "Thursday",
+    "availability": [
+      {
+        "name": "domingo",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "morph",
+        "start": 11,
+        "end": 6
+      },
+      {
+        "name": "taylor",
+        "start": 11,
+        "end": 4
+      },
+      {
+        "name": "grace",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "gemma",
+        "start": 4,
+        "end": 8
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 5
+      },
+      {
+        "name": "miranda",
+        "start": 11,
+        "end": 4
+      }
+    ],
+    "unavailable": [],
+    "staffed": [
+      "taylor 11-4, ",
+      "grace 4-8",
+      "lab",
+      "athena (pop in on taylor for support durring animal care and prep classroom for linobock class) 11 - 3 pm, ",
+      "bayla 4-6 if youd like but classes start in lab at 6pm",
+      "cam anytime you want to assist athena and bayla in lab"
+    ],
+    "event": "Prep materials for wet specimens class tomorrow (bayla & athena)",
+    "event_time": null,
+    "location": null,
+    "eventbrite": null
+  },
+  {
+    "date": "2025-06-26",
+    "day": "Thursday",
+    "availability": [],
+    "unavailable": [],
+    "staffed": [],
+    "event": "Bug & Block: Linocut Carving Workshop at The Insect Asylum",
+    "event_time": "6-8 pm",
+    "location": "Classroom",
+    "eventbrite": "https://www.eventbrite.com/e/bug-block-linocut-carving-workshop-at-the-insect-asylum-tickets-1347315048579?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-27",
+    "day": "Friday",
+    "availability": [
+      {
+        "name": "bayla",
+        "start": null,
+        "end": null
+      },
+      {
+        "name": "domingo",
+        "start": 3,
+        "end": 8
+      },
+      {
+        "name": "grace",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "rob",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "miranda",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "emilie",
+        "start": 11,
+        "end": 8
+      }
+    ],
+    "unavailable": [],
+    "staffed": [
+      "Miranda 11-4:30, ",
+      "emilie 11-4",
+      "morph 4-8, ",
+      "bayla 5:30-9 (wet class)"
+    ],
+    "event": "Sensory Friendly Friday",
+    "event_time": "11:00 am - 3:00 pm",
+    "location": "museum",
+    "eventbrite": "https://www.eventbrite.com/e/1110888309839?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-27",
+    "day": "Friday",
+    "availability": [],
+    "unavailable": [],
+    "staffed": [],
+    "event": "Reptile Wet specimens class (snakes & lizards)",
+    "event_time": "6:30 - 8:30 pm",
+    "location": "classroom",
+    "eventbrite": "https://www.eventbrite.com/e/lizards-snakes-science-reptile-wet-specimen-workshop-tickets-1369209164469?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-28",
+    "day": "Saturday",
+    "availability": [
+      {
+        "name": "domingo",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "morph",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "rob",
+        "start": 2,
+        "end": 8
+      },
+      {
+        "name": "miranda",
+        "start": 1,
+        "end": 5
+      },
+      {
+        "name": "emilie",
+        "start": 11,
+        "end": 8
+      }
+    ],
+    "unavailable": [
+      "Bayla, Grace"
+    ],
+    "staffed": [
+      "domingo 11-8, ",
+      "Miranda 1-5,",
+      "rob 3-8",
+      "emilie 5-8",
+      "cam shadow both classes if avalible 11:30-5pm",
+      "before end of day: prep apt for yoga class if donnie cant (one blue chair in office, other next to elvis, put couch in front of office and bathroom doors, clean floors and elvis area well! - cage too- put new puppy pads down for him, condense tables by zoey the zebra, and make kitchen look presentable, all dishes in dishwasher please.)- no harsh chem or smelly stuff near elvis plzzzzz"
+    ],
+    "event": "owl pellet/resin jewelry",
+    "event_time": "3-5 pm",
+    "location": "classroom",
+    "eventbrite": "https://www.eventbrite.com/e/owl-pellet-dissectionjewelry-making-workshop-last-saturday-of-the-month-tickets-1314245576899?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-28",
+    "day": "Saturday",
+    "availability": [],
+    "unavailable": [],
+    "staffed": [],
+    "event": "bug framing workshop",
+    "event_time": "12-2 pm",
+    "location": "classroom",
+    "eventbrite": "https://www.eventbrite.com/e/frame-your-insect-intro-to-insect-mounting-framing-tickets-1377000819519?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-29",
+    "day": "Sunday",
+    "availability": [
+      {
+        "name": "domingo",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "morph",
+        "start": 2,
+        "end": 8
+      },
+      {
+        "name": "gemma",
+        "start": 11,
+        "end": 8
+      },
+      {
+        "name": "rob",
+        "start": 2,
+        "end": 8
+      },
+      {
+        "name": "miranda",
+        "start": 11,
+        "end": 2
+      },
+      {
+        "name": "emilie",
+        "start": 11,
+        "end": 8
+      }
+    ],
+    "unavailable": [
+      "Bayla, Grace"
+    ],
+    "staffed": [
+      "domingo 11-6, ",
+      "Miranda 11-2, ",
+      "gemma 11-4",
+      "rob 4-8"
+    ],
+    "event": "snake animal yoga",
+    "event_time": "12-1 pm",
+    "location": "apartment",
+    "eventbrite": "https://www.eventbrite.com/e/stretch-and-squeak-animal-yoga-with-opal-the-opossum-elvis-the-macaw-tickets-1376415849859?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-29",
+    "day": "Sunday",
+    "availability": [],
+    "unavailable": [],
+    "staffed": [],
+    "event": "wings and things: monarch chrysalis crafting ( RIP Repurposed)",
+    "event_time": "1-2 pm",
+    "location": "Classroom",
+    "eventbrite": "https://www.eventbrite.com/e/wings-things-monarch-pinning-chrysalis-crafting-tickets-1376569710059?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-29",
+    "day": "Sunday",
+    "availability": [],
+    "unavailable": [],
+    "staffed": [],
+    "event": "wings and things: monarch butterfly pinning ( RIP Repurposed)",
+    "event_time": "2:30 - 3:30 pm",
+    "location": "Classroom",
+    "eventbrite": "https://www.eventbrite.com/e/wings-things-monarch-pinning-chrysalis-crafting-tickets-1376569710059?aff=oddtdtcreator"
+  },
+  {
+    "date": "2025-06-30",
+    "day": "Monday",
+    "availability": [
+      {
+        "name": "miranda",
+        "start": null,
+        "end": null
+      },
+      {
+        "name": "taylor",
+        "start": null,
+        "end": null
+      },
+      {
+        "name": "emilie",
+        "start": 11,
+        "end": 8
+      }
+    ],
+    "unavailable": [],
+    "staffed": [
+      "Taylor and emilie animal care"
+    ],
+    "event": null,
+    "event_time": null,
+    "location": null,
+    "eventbrite": null
+  }
+]

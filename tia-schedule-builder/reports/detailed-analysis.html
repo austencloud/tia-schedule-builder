@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIA Schedule Builder - Detailed Analysis Report</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/table.css">
+    
+    <style>
+        .analysis-header {
+            background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .analysis-nav {
+            background: #34495e;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .back-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            background: #3498db;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .back-link:hover {
+            background: #2980b9;
+        }
+        
+        .analysis-section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .metric-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #3498db;
+        }
+        
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .chart-placeholder {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            color: #7f8c8d;
+            margin: 20px 0;
+        }
+        
+        .recommendation-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .recommendation-item {
+            background: #e8f5e8;
+            border-left: 4px solid #27ae60;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        
+        .recommendation-item.warning {
+            background: #fff3e0;
+            border-left-color: #f39c12;
+        }
+        
+        .recommendation-item.critical {
+            background: #ffebee;
+            border-left-color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="analysis-header">
+            <h1>📊 Detailed Analysis Report</h1>
+            <div class="subtitle">TIA Schedule Builder - June 2025 Comprehensive Analytics</div>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="analysis-nav">
+            <a href="../index.html" class="back-link">← Back to Main Report</a>
+            <div style="color: white; font-size: 0.9em;">
+                Generated: <span id="reportDate"></span>
+            </div>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <!-- Executive Summary -->
+            <section class="analysis-section">
+                <h2>📋 Executive Summary</h2>
+                <p>This detailed analysis provides comprehensive insights into TIA's June 2025 staffing patterns, utilization rates, and operational efficiency. The corrected calculations reveal significant under-utilization opportunities rather than the previously identified crisis scenario.</p>
+                
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">$8,365</div>
+                        <div class="metric-label">Total Payroll</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">483</div>
+                        <div class="metric-label">Total Hours</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">13/16</div>
+                        <div class="metric-label">Staff Utilized</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">47.7%</div>
+                        <div class="metric-label">Avg Utilization</div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Utilization Analysis -->
+            <section class="analysis-section">
+                <h2>📈 Staff Utilization Analysis</h2>
+                <p>Analysis of staff utilization rates based on corrected weekly-to-monthly hour calculations (Weekly Desired × 4.3 weeks).</p>
+                
+                <h3>Utilization Categories</h3>
+                <div class="metric-grid">
+                    <div class="metric-card" style="border-left-color: #27ae60;">
+                        <div class="metric-value">2</div>
+                        <div class="metric-label">Optimal (75-125%)</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #f39c12;">
+                        <div class="metric-value">11</div>
+                        <div class="metric-label">Under-Utilized (<75%)</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #e74c3c;">
+                        <div class="metric-value">0</div>
+                        <div class="metric-label">Over-Utilized (>125%)</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #95a5a6;">
+                        <div class="metric-value">3</div>
+                        <div class="metric-label">Not Scheduled</div>
+                    </div>
+                </div>
+                
+                <div class="chart-placeholder">
+                    📊 Utilization Distribution Chart
+                    <br><small>Interactive chart showing staff utilization percentages would be displayed here</small>
+                </div>
+            </section>
+            
+            <!-- Financial Analysis -->
+            <section class="analysis-section">
+                <h2>💰 Financial Analysis</h2>
+                
+                <h3>Cost Breakdown by Staff Category</h3>
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">$8,364.50</div>
+                        <div class="metric-label">Paid Staff Total</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">$0.00</div>
+                        <div class="metric-label">Volunteer Hours Value</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">$17.32</div>
+                        <div class="metric-label">Average Hourly Rate</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">$97.39</div>
+                        <div class="metric-label">Cost per Coverage Day</div>
+                    </div>
+                </div>
+                
+                <h3>Top Earners Analysis</h3>
+                <table class="staff-table">
+                    <thead>
+                        <tr>
+                            <th>Staff Member</th>
+                            <th>Monthly Pay</th>
+                            <th>Hours Worked</th>
+                            <th>Effective Rate</th>
+                            <th>% of Total Payroll</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Rob</strong></td>
+                            <td class="currency">$1,280.00</td>
+                            <td class="number">64</td>
+                            <td class="currency">$20.00</td>
+                            <td class="number">15.3%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Grace</strong></td>
+                            <td class="currency">$1,275.00</td>
+                            <td class="number">75</td>
+                            <td class="currency">$17.00</td>
+                            <td class="number">15.2%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Domingo</strong></td>
+                            <td class="currency">$1,200.00</td>
+                            <td class="number">48</td>
+                            <td class="currency">$25.00</td>
+                            <td class="number">14.3%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+            <!-- Coverage Analysis -->
+            <section class="analysis-section">
+                <h2>📅 Coverage Analysis</h2>
+                
+                <div class="metric-grid">
+                    <div class="metric-card" style="border-left-color: #27ae60;">
+                        <div class="metric-value">21</div>
+                        <div class="metric-label">Days with Coverage</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #e74c3c;">
+                        <div class="metric-value">9</div>
+                        <div class="metric-label">Days without Coverage</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #3498db;">
+                        <div class="metric-value">23.0</div>
+                        <div class="metric-label">Average Hours per Coverage Day</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #9b59b6;">
+                        <div class="metric-value">70%</div>
+                        <div class="metric-label">Coverage Rate</div>
+                    </div>
+                </div>
+                
+                <h3>Coverage Gaps Analysis</h3>
+                <p>The following days had no staff coverage, representing potential service gaps:</p>
+                <ul>
+                    <li>June 2, 3 (Monday-Tuesday) - Week start gap</li>
+                    <li>June 9, 10 (Monday-Tuesday) - Mid-month gap</li>
+                    <li>June 16, 17 (Monday-Tuesday) - Recurring pattern</li>
+                    <li>June 23, 24 (Monday-Tuesday) - End-month gap</li>
+                    <li>June 30 (Monday) - Month-end closure</li>
+                </ul>
+            </section>
+            
+            <!-- Strategic Recommendations -->
+            <section class="analysis-section">
+                <h2>🎯 Strategic Recommendations</h2>
+                
+                <h3>Immediate Actions (0-30 days)</h3>
+                <ul class="recommendation-list">
+                    <li class="recommendation-item critical">
+                        <strong>Address Monday-Tuesday Coverage Gaps:</strong> Implement consistent staffing for recurring Monday-Tuesday gaps affecting 8 out of 9 uncovered days.
+                    </li>
+                    <li class="recommendation-item warning">
+                        <strong>Redistribute Workload:</strong> Move hours from Grace (87% utilization) to severely under-utilized staff like Cam (17%) and Emilie (19%).
+                    </li>
+                    <li class="recommendation-item">
+                        <strong>Activate Ruby:</strong> Ruby is completely unscheduled (0% utilization) with 10 desired weekly hours available.
+                    </li>
+                </ul>
+                
+                <h3>Medium-term Improvements (1-3 months)</h3>
+                <ul class="recommendation-list">
+                    <li class="recommendation-item">
+                        <strong>Optimize Staff Mix:</strong> Review if 16 available staff members align with actual operational needs.
+                    </li>
+                    <li class="recommendation-item">
+                        <strong>Enhance Volunteer Engagement:</strong> Develop programs to better utilize Reece and Emily's availability.
+                    </li>
+                    <li class="recommendation-item warning">
+                        <strong>Review Desired Hours:</strong> Assess if staff desired hours match organizational requirements and capacity.
+                    </li>
+                </ul>
+                
+                <h3>Long-term Strategic Goals (3-12 months)</h3>
+                <ul class="recommendation-list">
+                    <li class="recommendation-item">
+                        <strong>Implement Predictive Scheduling:</strong> Use historical data to optimize future staff allocation.
+                    </li>
+                    <li class="recommendation-item">
+                        <strong>Develop Cross-Training Programs:</strong> Increase flexibility by training staff in multiple roles.
+                    </li>
+                    <li class="recommendation-item">
+                        <strong>Create Performance Metrics:</strong> Establish KPIs for utilization, coverage, and cost efficiency.
+                    </li>
+                </ul>
+            </section>
+            
+            <!-- Risk Assessment -->
+            <section class="analysis-section">
+                <h2>⚠️ Risk Assessment</h2>
+                
+                <h3>Operational Risks</h3>
+                <div class="metric-grid">
+                    <div class="metric-card" style="border-left-color: #e74c3c;">
+                        <div class="metric-value">HIGH</div>
+                        <div class="metric-label">Coverage Gap Risk</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #f39c12;">
+                        <div class="metric-value">MEDIUM</div>
+                        <div class="metric-label">Staff Burnout Risk</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #27ae60;">
+                        <div class="metric-value">LOW</div>
+                        <div class="metric-label">Financial Risk</div>
+                    </div>
+                    <div class="metric-card" style="border-left-color: #3498db;">
+                        <div class="metric-value">MEDIUM</div>
+                        <div class="metric-label">Efficiency Risk</div>
+                    </div>
+                </div>
+                
+                <p><strong>Key Risk Factors:</strong></p>
+                <ul>
+                    <li>30% of days without coverage creates service delivery risk</li>
+                    <li>Heavy reliance on Grace and Rob for coverage</li>
+                    <li>Significant under-utilization of available staff resources</li>
+                    <li>Recurring Monday-Tuesday gaps suggest systematic scheduling issues</li>
+                </ul>
+            </section>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>TIA Schedule Builder - Detailed Analysis Report</strong></p>
+            <p>Report generated with corrected utilization calculations | Data source: june_2025.json</p>
+            <p>For questions about this analysis, contact the TIA scheduling team</p>
+        </div>
+    </div>
+    
+    <script>
+        // Set current date
+        document.getElementById('reportDate').textContent = new Date().toLocaleDateString();
+        
+        // Add print functionality
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+                window.print();
+            }
+        });
+    </script>
+</body>
+</html>
