@@ -1,8 +1,7 @@
 [build]
   publish = "dist"
   command = "npm run build"
-  commandOrigin = "config"
-  publishOrigin = "config"
+  ignore = false
 
 [build.environment]
   NODE_VERSION = "18"
