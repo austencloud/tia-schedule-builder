@@ -5,7 +5,12 @@ export class CalendarHandler {
   constructor(modalHandler) {
     this.modalHandler = modalHandler;
     this.container = document.getElementById("calendar-container");
-    this.calendarData = this.generateCalendarData();
+    this.calendarData = [];
+    this.initializeCalendarData();
+  }
+
+  async initializeCalendarData() {
+    this.calendarData = await this.generateCalendarData();
   }
 
   async render() {
@@ -14,328 +19,286 @@ export class CalendarHandler {
       return;
     }
 
+    // Ensure calendar data is loaded
+    if (this.calendarData.length === 0) {
+      this.calendarData = await this.generateCalendarData();
+    }
+
     this.container.innerHTML = this.generateCalendarHTML();
     this.setupEventListeners();
   }
 
-  generateCalendarData() {
-    // Complete June 2025 calendar data based on the original TIA schedule
+  async generateCalendarData() {
+    // Load and transform the real June 2025 schedule data
+    try {
+      const response = await fetch("./june_2025.json");
+      const jsonData = await response.json();
+      return this.transformJsonToCalendarData(jsonData);
+    } catch (error) {
+      console.error("Error loading schedule data:", error);
+      return this.getFallbackData();
+    }
+  }
+
+  transformJsonToCalendarData(jsonData) {
+    const calendarData = [];
+
+    // Group data by date to handle multiple events per day
+    const groupedByDate = {};
+    jsonData.forEach((entry) => {
+      const date = entry.date;
+      if (!groupedByDate[date]) {
+        groupedByDate[date] = [];
+      }
+      groupedByDate[date].push(entry);
+    });
+
+    // Transform each day's data
+    Object.keys(groupedByDate).forEach((date) => {
+      const dayEntries = groupedByDate[date];
+      const primaryEntry = dayEntries[0]; // Use first entry as primary
+      const dayNumber = parseInt(date.split("-")[2]);
+
+      const transformedDay = {
+        day: dayNumber,
+        date: date,
+        dayName: primaryEntry.day,
+        staff: this.parseStaffData(primaryEntry),
+        totalHours: 0, // Will be calculated
+        events: this.parseEvents(dayEntries),
+        notes: this.parseNotes(primaryEntry),
+        availability: primaryEntry.availability || [],
+        unavailable: primaryEntry.unavailable || [],
+        eventDetails: this.parseEventDetails(dayEntries),
+      };
+
+      // Calculate total hours
+      transformedDay.totalHours = this.calculateTotalHours(
+        transformedDay.staff
+      );
+
+      calendarData.push(transformedDay);
+    });
+
+    return calendarData.sort((a, b) => a.day - b.day);
+  }
+
+  parseStaffData(entry) {
+    const staff = [];
+
+    if (entry.staffed && entry.staffed.length > 0) {
+      entry.staffed.forEach((staffEntry) => {
+        if (typeof staffEntry === "string" && staffEntry.trim()) {
+          const parsed = this.parseStaffEntry(staffEntry);
+          if (parsed) {
+            // Handle both single staff member and array of staff members
+            if (Array.isArray(parsed)) {
+              staff.push(...parsed);
+            } else {
+              staff.push(parsed);
+            }
+          }
+        }
+      });
+    }
+
+    return staff;
+  }
+
+  parseStaffEntry(staffText) {
+    const text = staffText.toLowerCase().trim();
+
+    // Skip entries that are just notes or instructions
+    if (
+      text.includes("if you") ||
+      text.includes("sorry for") ||
+      text.includes("please") ||
+      (text.includes("have") && text.includes("train")) ||
+      text.includes("dont try")
+    ) {
+      return null;
+    }
+
+    // Handle multiple staff members separated by &
+    if (text.includes(" & ")) {
+      const staffMembers = text.split(" & ");
+      const results = [];
+      staffMembers.forEach((member) => {
+        const parsed = this.parseStaffEntry(member.trim());
+        if (parsed) {
+          if (Array.isArray(parsed)) {
+            results.push(...parsed);
+          } else {
+            results.push(parsed);
+          }
+        }
+      });
+      return results.length > 0 ? results : null;
+    }
+
+    // Handle "and" separator as well
+    if (text.includes(" and ") && !text.includes("animal care")) {
+      const staffMembers = text.split(" and ");
+      const results = [];
+      staffMembers.forEach((member) => {
+        const parsed = this.parseStaffEntry(member.trim());
+        if (parsed) {
+          if (Array.isArray(parsed)) {
+            results.push(...parsed);
+          } else {
+            results.push(parsed);
+          }
+        }
+      });
+      return results.length > 0 ? results : null;
+    }
+
+    // Extract role prefix (lab, tbd, etc.)
+    let role = "General";
+    let cleanText = text;
+
+    if (text.startsWith("lab")) {
+      role = "Lab";
+      cleanText = text.replace(/^lab\s*:?\s*/, "");
+    } else if (text.startsWith("tbd")) {
+      role = "TBD";
+      cleanText = text.replace(/^tbd\s*:?\s*/, "");
+    } else if (text.includes("animal care")) {
+      role = "Animal Care";
+    } else if (text.includes("training")) {
+      role = "Training";
+    } else if (text.includes("desk") || text.includes("front")) {
+      role = "Front Desk";
+    } else if (text.includes("volunteer")) {
+      role = "Volunteer";
+    }
+
+    // Handle time patterns like "11-5" or "9:30-3" or "10:30-6:30"
+    const timeMatch = cleanText.match(
+      /(\d{1,2}(?::\d{2})?)\s*[-–]\s*(\d{1,2}(?::\d{2})?)/
+    );
+
+    // Extract name - look for common names
+    const nameMatch = cleanText.match(
+      /\b(grace|gemma|morph|domingo|rob|emilie|miranda|taylor|athena|bayla|cam|courtney|donnie|doming)\b/
+    );
+
+    if (nameMatch) {
+      const name = nameMatch[1].charAt(0).toUpperCase() + nameMatch[1].slice(1);
+      let time = "TBD";
+      let hours = 0;
+
+      if (timeMatch) {
+        const startTime = timeMatch[1];
+        const endTime = timeMatch[2];
+        time = `${this.formatTime(startTime)}-${this.formatTime(endTime)}`;
+        hours = this.calculateHours(startTime, endTime);
+      }
+
+      return { name, time, role, hours };
+    }
+
+    // Handle special cases like "am taylor and grace animal care"
+    if (text.includes("am ") && text.includes("animal care")) {
+      const names = text.match(
+        /\b(grace|gemma|morph|domingo|rob|emilie|miranda|taylor|athena|bayla|cam|courtney|donnie)\b/g
+      );
+      if (names) {
+        return names.map((name) => ({
+          name: name.charAt(0).toUpperCase() + name.slice(1),
+          time: "AM shift",
+          role: "Animal Care",
+          hours: 4,
+        }));
+      }
+    }
+
+    return null;
+  }
+
+  parseEvents(dayEntries) {
+    const events = [];
+
+    dayEntries.forEach((entry) => {
+      if (entry.event && entry.event.trim()) {
+        events.push(entry.event);
+      }
+    });
+
+    return events.length > 0 ? events : ["No scheduled events"];
+  }
+
+  parseNotes(entry) {
+    // Combine staffed entries as notes if they contain additional information
+    if (entry.staffed && entry.staffed.length > 0) {
+      const notes = entry.staffed
+        .filter(
+          (s) => s.includes("note") || s.includes("TBD") || s.includes("if")
+        )
+        .join(" ");
+      return notes || "Regular operations";
+    }
+    return "Regular operations";
+  }
+
+  parseEventDetails(dayEntries) {
+    return dayEntries
+      .map((entry) => ({
+        event: entry.event,
+        eventTime: entry.event_time,
+        location: entry.location,
+        eventbrite: entry.eventbrite,
+      }))
+      .filter((detail) => detail.event);
+  }
+
+  formatTime(timeStr) {
+    // Convert "11" to "11am", "13" to "1pm", etc.
+    const time = parseInt(timeStr.split(":")[0]);
+    const minutes = timeStr.includes(":") ? timeStr.split(":")[1] : "00";
+
+    if (time === 12) {
+      return timeStr.includes(":") ? `${timeStr}pm` : `12pm`;
+    } else if (time < 12) {
+      return timeStr.includes(":") ? `${timeStr}am` : `${time}am`;
+    } else {
+      const hour12 = time - 12;
+      return timeStr.includes(":") ? `${hour12}:${minutes}pm` : `${hour12}pm`;
+    }
+  }
+
+  calculateHours(startTime, endTime) {
+    // Enhanced hour calculation with minutes support
+    const [startHour, startMin = 0] = startTime.split(":").map(Number);
+    const [endHour, endMin = 0] = endTime.split(":").map(Number);
+
+    const startTotalMinutes = startHour * 60 + startMin;
+    let endTotalMinutes = endHour * 60 + endMin;
+
+    // Handle overnight shifts (end time is next day)
+    if (endTotalMinutes <= startTotalMinutes) {
+      endTotalMinutes += 24 * 60;
+    }
+
+    const totalMinutes = endTotalMinutes - startTotalMinutes;
+    return Math.round((totalMinutes / 60) * 2) / 2; // Round to nearest 0.5 hour
+  }
+
+  calculateTotalHours(staff) {
+    return staff.reduce((total, member) => total + (member.hours || 0), 0);
+  }
+
+  getFallbackData() {
+    // Return minimal fallback data if JSON loading fails
     return [
       {
         day: 1,
         date: "2025-06-01",
         dayName: "Sunday",
-        staff: [
-          { name: "Grace", time: "11am-7pm", role: "Animal Care", hours: 8 },
-          { name: "Gemma", time: "11am-7pm", role: "Front Desk", hours: 8 },
-        ],
-        totalHours: 16,
-        events: ["Regular operations", "Volunteer orientation at 2pm"],
-        notes: "Busy Sunday with good coverage",
-      },
-      {
-        day: 4,
-        date: "2025-06-04",
-        dayName: "Wednesday",
-        staff: [
-          { name: "Gemma", time: "1pm-5pm", role: "Front Desk", hours: 4 },
-          { name: "Grace", time: "3pm-8pm", role: "Animal Care", hours: 5 },
-          { name: "Athena", time: "9:30am-5:30pm", role: "Lab", hours: 8 },
-        ],
-        totalHours: 17,
-        events: ["Lab maintenance scheduled", "New volunteer training"],
-        notes: "Mid-week operations with lab focus",
-      },
-      {
-        day: 5,
-        date: "2025-06-05",
-        dayName: "Thursday",
-        staff: [
-          { name: "Taylor", time: "11am-7pm", role: "Animal Care", hours: 8 },
-          { name: "Grace", time: "3pm-8pm", role: "Animal Care", hours: 5 },
-          { name: "Bayla", time: "11am-7pm", role: "Lab", hours: 8 },
-        ],
-        totalHours: 21,
-        events: ["Regular operations"],
-        notes: "Good coverage with lab support",
-      },
-      {
-        day: 6,
-        date: "2025-06-06",
-        dayName: "Friday",
-        staff: [
-          { name: "Miranda", time: "11am-7pm", role: "Front Desk", hours: 8 },
-          { name: "Taylor", time: "11am-7pm", role: "Animal Care", hours: 8 },
-          { name: "Domingo", time: "3pm-8pm", role: "Animal Care", hours: 5 },
-        ],
-        totalHours: 21,
-        events: ["End of week operations"],
-        notes: "Strong Friday coverage",
-      },
-      {
-        day: 7,
-        date: "2025-06-07",
-        dayName: "Saturday",
-        staff: [
-          { name: "Rob", time: "9:30am-5:30pm", role: "Lab", hours: 8 },
-          { name: "Gemma", time: "11am-7pm", role: "Front Desk", hours: 8 },
-          { name: "Morph", time: "5pm-8pm", role: "Animal Care", hours: 3 },
-          { name: "Athena", time: "11am-7pm", role: "Lab", hours: 8 },
-        ],
-        totalHours: 27,
-        events: ["Weekend operations", "Lab research projects"],
-        notes: "Busy Saturday with strong lab presence",
-      },
-      {
-        day: 8,
-        date: "2025-06-08",
-        dayName: "Sunday",
-        staff: [
-          { name: "Courtney", time: "12pm-8pm", role: "Volunteer", hours: 8 },
-          { name: "Grace", time: "4pm-8pm", role: "Animal Care", hours: 4 },
-          { name: "Gemma", time: "11am-7pm", role: "Front Desk", hours: 8 },
-          {
-            name: "Domingo",
-            time: "10:30am-6:30pm",
-            role: "Animal Care",
-            hours: 8,
-          },
-        ],
-        totalHours: 28,
-        events: ["Sunday operations", "Volunteer activities"],
-        notes: "Excellent Sunday coverage with volunteer support",
-      },
-      {
-        day: 11,
-        date: "2025-06-11",
-        dayName: "Wednesday",
-        staff: [
-          { name: "Athena", time: "9:30am-5:30pm", role: "Lab", hours: 8 },
-          { name: "Grace", time: "3pm-8pm", role: "Animal Care", hours: 5 },
-          { name: "Domingo", time: "3pm-5pm", role: "Animal Care", hours: 2 },
-        ],
-        totalHours: 15,
-        events: ["Mid-week lab focus"],
-        notes: "Moderate coverage with lab emphasis",
-      },
-      {
-        day: 12,
-        date: "2025-06-12",
-        dayName: "Thursday",
-        staff: [
-          { name: "Rob", time: "11am-7pm", role: "Lab", hours: 8 },
-          { name: "Athena", time: "11am-7pm", role: "Lab", hours: 8 },
-          { name: "Cam", time: "12pm-8pm", role: "Lab", hours: 8 },
-          { name: "Bayla", time: "4pm-8pm", role: "Lab", hours: 4 },
-          { name: "Morph", time: "11am-7pm", role: "Animal Care", hours: 8 },
-          {
-            name: "Miranda",
-            time: "4:30pm-8pm",
-            role: "Front Desk",
-            hours: 3.5,
-          },
-          { name: "Grace", time: "3pm-8pm", role: "Animal Care", hours: 5 },
-        ],
-        totalHours: 44.5,
-        events: [
-          "Heavy lab day",
-          "Multiple research projects",
-          "Staff meeting at 6pm",
-        ],
-        notes: "Busiest day of the month with 44.5 total hours",
-      },
-      {
-        day: 13,
-        date: "2025-06-13",
-        dayName: "Friday",
-        staff: [
-          { name: "Rob", time: "11am-7pm", role: "Lab", hours: 8 },
-          { name: "Miranda", time: "11am-7pm", role: "Front Desk", hours: 8 },
-          { name: "Emilie", time: "5pm-8pm", role: "Lab", hours: 3 },
-          { name: "Grace", time: "3pm-8pm", role: "Animal Care", hours: 5 },
-          { name: "Domingo", time: "3pm-8pm", role: "Animal Care", hours: 5 },
-        ],
-        totalHours: 29,
-        events: ["End of week operations", "Lab maintenance"],
-        notes: "Strong Friday with lab focus",
-      },
-      {
-        day: 14,
-        date: "2025-06-14",
-        dayName: "Saturday",
-        staff: [
-          { name: "Athena", time: "9:30am-5:30pm", role: "Lab", hours: 8 },
-          { name: "Cam", time: "5:30pm-8pm", role: "Lab", hours: 2.5 },
-          { name: "Rob", time: "4pm-8pm", role: "Lab", hours: 4 },
-          { name: "Bayla", time: "11am-7pm", role: "Lab", hours: 8 },
-        ],
-        totalHours: 22.5,
-        events: ["Weekend lab operations"],
-        notes: "Saturday lab focus",
-      },
-      {
-        day: 15,
-        date: "2025-06-15",
-        dayName: "Sunday",
-        staff: [
-          { name: "Courtney", time: "12pm-8pm", role: "Volunteer", hours: 8 },
-          { name: "Morph", time: "4pm-8pm", role: "Animal Care", hours: 4 },
-          { name: "Rob", time: "11am-7pm", role: "Lab", hours: 8 },
-          { name: "Emilie", time: "6pm-8pm", role: "Lab", hours: 2 },
-        ],
-        totalHours: 22,
-        events: ["Sunday operations", "Volunteer activities"],
-        notes: "Good Sunday coverage",
-      },
-      {
-        day: 18,
-        date: "2025-06-18",
-        dayName: "Wednesday",
-        staff: [
-          { name: "Rob", time: "11am-7pm", role: "Lab", hours: 8 },
-          { name: "Athena", time: "9:30am-5:30pm", role: "Lab", hours: 8 },
-          { name: "Domingo", time: "3pm-8pm", role: "Animal Care", hours: 5 },
-        ],
-        totalHours: 21,
-        events: ["Mid-week operations"],
-        notes: "Solid Wednesday coverage",
-      },
-      {
-        day: 19,
-        date: "2025-06-19",
-        dayName: "Thursday",
-        staff: [
-          { name: "Grace", time: "11am-7pm", role: "Animal Care", hours: 8 },
-          { name: "Taylor", time: "11am-7pm", role: "Animal Care", hours: 8 },
-          { name: "Domingo", time: "3pm-8pm", role: "Animal Care", hours: 5 },
-          { name: "Cam", time: "4pm-8pm", role: "Lab", hours: 4 },
-        ],
-        totalHours: 25,
-        events: ["Regular operations"],
-        notes: "Strong animal care focus",
-      },
-      {
-        day: 20,
-        date: "2025-06-20",
-        dayName: "Friday",
-        staff: [
-          { name: "Taylor", time: "11am-7pm", role: "Animal Care", hours: 8 },
-          { name: "Grace", time: "11am-7pm", role: "Animal Care", hours: 8 },
-          { name: "Miranda", time: "5pm-8pm", role: "Front Desk", hours: 3 },
-          { name: "Domingo", time: "3pm-8pm", role: "Animal Care", hours: 5 },
-          { name: "Gemma", time: "1pm-7pm", role: "Front Desk", hours: 6 },
-          { name: "Bayla", time: "3:30pm-8pm", role: "Lab", hours: 4.5 },
-        ],
-        totalHours: 34.5,
-        events: ["Busy Friday operations"],
-        notes: "Excellent coverage across all areas",
-      },
-      {
-        day: 21,
-        date: "2025-06-21",
-        dayName: "Saturday",
-        staff: [
-          { name: "Morph", time: "11am-7pm", role: "Animal Care", hours: 8 },
-          { name: "Athena", time: "9:30am-5:30pm", role: "Lab", hours: 8 },
-          { name: "Grace", time: "3pm-8pm", role: "Animal Care", hours: 5 },
-          { name: "Rob", time: "2pm-8pm", role: "Lab", hours: 6 },
-        ],
-        totalHours: 27,
-        events: ["Weekend operations"],
-        notes: "Good Saturday coverage",
-      },
-      {
-        day: 22,
-        date: "2025-06-22",
-        dayName: "Sunday",
-        staff: [
-          { name: "Grace", time: "11am-7pm", role: "Animal Care", hours: 8 },
-          { name: "Rob", time: "3pm-8pm", role: "Lab", hours: 5 },
-          { name: "Taylor", time: "2pm-8pm", role: "Animal Care", hours: 6 },
-          { name: "Donnie", time: "2pm-8pm", role: "Live-in", hours: 6 },
-        ],
-        totalHours: 25,
-        events: ["Sunday operations"],
-        notes: "Solid Sunday coverage",
-      },
-      {
-        day: 25,
-        date: "2025-06-25",
-        dayName: "Wednesday",
-        staff: [
-          { name: "Domingo", time: "3pm-8pm", role: "Animal Care", hours: 5 },
-          { name: "Grace", time: "3pm-8pm", role: "Animal Care", hours: 5 },
-          { name: "Athena", time: "9:30am-5:30pm", role: "Lab", hours: 8 },
-        ],
-        totalHours: 18,
-        events: ["Mid-week operations"],
-        notes: "Moderate Wednesday coverage",
-      },
-      {
-        day: 26,
-        date: "2025-06-26",
-        dayName: "Thursday",
-        staff: [
-          { name: "Taylor", time: "11am-7pm", role: "Animal Care", hours: 8 },
-          { name: "Grace", time: "4pm-8pm", role: "Animal Care", hours: 4 },
-          { name: "Bayla", time: "6pm-8pm", role: "Lab", hours: 2 },
-        ],
-        totalHours: 14,
-        events: ["Light operations"],
-        notes: "Minimal Thursday coverage",
-      },
-      {
-        day: 27,
-        date: "2025-06-27",
-        dayName: "Friday",
-        staff: [
-          { name: "Miranda", time: "11am-7pm", role: "Front Desk", hours: 8 },
-          { name: "Emilie", time: "12pm-8pm", role: "Lab", hours: 8 },
-          { name: "Morph", time: "4pm-8pm", role: "Animal Care", hours: 4 },
-          { name: "Bayla", time: "4:30pm-8pm", role: "Lab", hours: 3.5 },
-        ],
-        totalHours: 23.5,
-        events: ["End of week operations"],
-        notes: "Good Friday coverage",
-      },
-      {
-        day: 28,
-        date: "2025-06-28",
-        dayName: "Saturday",
-        staff: [
-          {
-            name: "Domingo",
-            time: "10:30am-6:30pm",
-            role: "Animal Care",
-            hours: 8,
-          },
-          { name: "Miranda", time: "4pm-8pm", role: "Front Desk", hours: 4 },
-          { name: "Rob", time: "3pm-8pm", role: "Lab", hours: 5 },
-          { name: "Emilie", time: "5pm-8pm", role: "Lab", hours: 3 },
-          { name: "Cam", time: "12pm-8pm", role: "Lab", hours: 8 },
-        ],
-        totalHours: 28,
-        events: ["Weekend operations", "Lab projects"],
-        notes: "Strong Saturday with lab focus",
-      },
-      {
-        day: 29,
-        date: "2025-06-29",
-        dayName: "Sunday",
-        staff: [
-          {
-            name: "Domingo",
-            time: "10:30am-6:30pm",
-            role: "Animal Care",
-            hours: 8,
-          },
-          { name: "Miranda", time: "11am-7pm", role: "Front Desk", hours: 8 },
-          { name: "Gemma", time: "11am-7pm", role: "Front Desk", hours: 8 },
-          { name: "Rob", time: "4pm-8pm", role: "Lab", hours: 4 },
-        ],
-        totalHours: 28,
-        events: ["End of month operations"],
-        notes: "Excellent final Sunday",
+        staff: [],
+        totalHours: 0,
+        events: ["Data loading failed"],
+        notes: "Unable to load schedule data",
       },
     ];
   }
