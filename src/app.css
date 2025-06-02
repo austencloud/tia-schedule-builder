@@ -1,0 +1,122 @@
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Container styles */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Responsive grid utilities */
+.grid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 480px) {
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) and (min-width: 481px) {
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Export button styles */
+.export-controls {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+  display: flex;
+  gap: 10px;
+}
+
+.export-btn {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.export-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Staff Colors */
+.staff-rob {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+.staff-grace {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+}
+.staff-domingo {
+  background: linear-gradient(135deg, #9b59b6, #8e44ad);
+}
+.staff-athena {
+  background: linear-gradient(135deg, #e67e22, #d35400);
+}
+.staff-miranda {
+  background: linear-gradient(135deg, #1abc9c, #16a085);
+}
+.staff-taylor {
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+}
+.staff-gemma {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+.staff-bayla {
+  background: linear-gradient(135deg, #34495e, #2c3e50);
+}
+.staff-morph {
+  background: linear-gradient(135deg, #e91e63, #ad1457);
+}
+.staff-emilie {
+  background: linear-gradient(135deg, #8e44ad, #7b1fa2);
+}
+.staff-cam {
+  background: linear-gradient(135deg, #16a085, #138d75);
+}
+.staff-courtney {
+  background: linear-gradient(135deg, #d35400, #ba4a00);
+}
