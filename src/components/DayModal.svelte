@@ -271,7 +271,15 @@
     {/snippet}
   </MobileModal>
 {:else}
-  <div class="modal-backdrop" onclick={handleBackdropClick} role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+  <div 
+    class="modal-backdrop" 
+    onclick={handleBackdropClick} 
+    role="dialog" 
+    aria-modal="true" 
+    aria-labelledby="modal-title" 
+    tabindex="-1"
+    onkeydown={(e) => e.key === 'Escape' && onClose()}
+  >
     <div class="modal-content">
       <div class="modal-header">
         <h3 id="modal-title">{currentDay.dayName}, June {currentDay.day}, 2025</h3>

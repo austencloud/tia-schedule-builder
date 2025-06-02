@@ -146,13 +146,16 @@
                 </div>
                 <div class="mobile-staff-preview">
                   {#each day.staff.slice(0, 2) as staffMember}
-                    <button
+                    <div
                       class="mobile-staff-chip {staffMember.color}"
                       onclick={(e) => openStaffProfile(e, staffMember)}
+                      role="button"
+                      tabindex="0"
+                      onkeydown={(e) => e.key === 'Enter' && openStaffProfile(e, staffMember)}
                       aria-label="View profile for {staffMember.name}"
                     >
                       {staffMember.name}
-                    </button>
+                    </div>
                   {/each}
                   {#if day.staff.length > 2}
                     <div class="mobile-more-indicator">+{day.staff.length - 2} more</div>
@@ -195,9 +198,12 @@
             
             <div class="staff-badges-container">
               {#each day.staff as staffMember}
-                <button
+                <div
                   class="staff-badge {staffMember.color}"
                   onclick={(e) => openStaffProfile(e, staffMember)}
+                  role="button"
+                  tabindex="0"
+                  onkeydown={(e) => e.key === 'Enter' && openStaffProfile(e, staffMember)}
                   aria-label="View profile for {staffMember.name}"
                 >
                   <span class="staff-name">{staffMember.name}</span>
@@ -205,7 +211,7 @@
                   {#if staffMember.role}
                     <span class="staff-role">{staffMember.role}</span>
                   {/if}
-                </button>
+                </div>
               {/each}
             </div>
             

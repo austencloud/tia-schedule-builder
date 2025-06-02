@@ -56,13 +56,15 @@
   });
 </script>
 
-<div 
-  class="mobile-modal-backdrop" 
+<div
+  class="mobile-modal-backdrop"
   class:open={isOpen}
   onclick={handleBackdropClick}
-  ontouchstart={handleTouchStart}
-  ontouchmove={handleTouchMove}
-  ontouchend={handleTouchEnd}
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="mobile-modal-title"
+  tabindex="-1"
+  onkeydown={(e) => e.key === 'Escape' && onClose()}
 >
   <div 
     class="mobile-modal-sheet" 

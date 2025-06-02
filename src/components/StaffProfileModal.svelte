@@ -59,7 +59,15 @@
   let contact = $derived(getStaffContact(staff.name));
 </script>
 
-<div class="modal-backdrop" onclick={handleBackdropClick}>
+<div 
+  class="modal-backdrop" 
+  onclick={handleBackdropClick}
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="staff-profile-title"
+  tabindex="-1"
+  onkeydown={(e) => e.key === 'Escape' && onClose()}
+>
   <div class="modal-content" class:mobile={isMobile}>
     <div class="modal-header">
       <div class="staff-header-info">
