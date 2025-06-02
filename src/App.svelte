@@ -6,6 +6,7 @@
   import Footer from './components/Footer.svelte';
   import ExportControls from './components/ExportControls.svelte';
   import { scheduleData as initialData } from './data/scheduleData.js';
+  import StaffSkillsAdmin from './components/StaffSkillsAdmin.svelte';
 
   // Convert to reactive state using Svelte 5 runes
   let scheduleData = $state(structuredClone(initialData));
@@ -46,6 +47,7 @@
   }
 
   let reportContainer;
+  let showAdminPanel = $state(false);
 
   function exportHTML() {
     const element = reportContainer;
@@ -115,24 +117,65 @@
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }
+
+  function toggleAdminPanel() {
+    showAdminPanel = !showAdminPanel;
+  }
 </script>
 
 <ExportControls {exportHTML} {downloadHTML} />
 
 <div class="container" bind:this={reportContainer}>
   <Header />
-  <SummaryCards data={scheduleData.summary} />
-  
-  <div class="content">
-    <Calendar days={scheduleData.days} staffList={scheduleData.staff} {updateDayData} />
-    <EventsSchedule categories={scheduleData.eventCategories} />
+
+  <!-- Admin Panel Toggle -->
+  <div class="admin-toggle">
+    <button onclick={toggleAdminPanel} class="admin-btn">
+      {showAdminPanel ? '📅 Back to Calendar' : '⚙️ Edit Staff Skills'}
+    </button>
   </div>
-  
-  <Footer />
+
+  {#if showAdminPanel}
+    <StaffSkillsAdmin />
+  {:else}
+    <main>
+      <SummaryCards data={scheduleData.summary} />
+      
+      <div class="content">
+        <Calendar days={scheduleData.days} staffList={scheduleData.staff} {updateDayData} />
+        <EventsSchedule categories={scheduleData.eventCategories} />
+      </div>
+      
+      <Footer />
+    </main>
+  {/if}
 </div>
 
 <style>
   .content {
     padding: 30px;
+  }
+
+  .admin-toggle {
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .admin-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  }
+
+  .admin-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
   }
 </style>

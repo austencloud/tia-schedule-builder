@@ -214,11 +214,14 @@
   }
 
   input, select {
-    padding: 8px 12px;
+    padding: 12px 16px; /* Increased for better touch targets */
     border: 2px solid #ecf0f1;
-    border-radius: 6px;
-    font-size: 0.9em;
+    border-radius: 8px;
+    font-size: 1rem; /* Increased for better readability */
     transition: border-color 0.2s ease;
+    min-height: 44px; /* Ensure minimum touch target */
+    -webkit-appearance: none; /* Remove default styling on iOS */
+    appearance: none; /* Standard property */
   }
 
   input:focus, select:focus {
@@ -233,12 +236,15 @@
   }
 
   .save-btn, .cancel-btn {
-    padding: 10px 20px;
+    padding: 12px 24px;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
+    font-size: 1rem;
+    min-height: 44px; /* Ensure minimum touch target */
     transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .save-btn {
