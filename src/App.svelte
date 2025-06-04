@@ -5,19 +5,68 @@
   import EventsSchedule from './components/EventsSchedule.svelte';
   import Footer from './components/Footer.svelte';
   import ExportControls from './components/ExportControls.svelte';
+  import AuthModal from './components/AuthModal.svelte';
+  import SyncStatus from './components/SyncStatus.svelte';
   import { scheduleData as initialData } from './data/scheduleData.js';
   import StaffSkillsAdmin from './components/StaffSkillsAdmin.svelte';
+  import { cloudDataStore } from './lib/cloudStore.js';
+  import { authService } from './lib/supabase.js';
 
-  // Convert to reactive state using Svelte 5 runes
+  // Convert to reactive state using Svelte 5 runes with cloud sync
   let scheduleData = $state(structuredClone(initialData));
-  
-  // Data management functions
-  function updateDayData(dayNumber, updatedDay) {
-    const dayIndex = scheduleData.days.findIndex(d => d.day === dayNumber);
-    if (dayIndex !== -1) {
-      scheduleData.days[dayIndex] = { ...updatedDay };
-      updateSummaryStats();
-    }
+  let isLoading = $state(true);
+  let showAuthModal = $state(false);
+  let user = $state(null);
+
+  // Initialize cloud data store
+  $effect(() => {
+    const initializeApp = async () => {
+      try {
+        // Check authentication status
+        user = await authService.getCurrentUser();
+
+        // Initialize cloud data store
+        await cloudDataStore.initialize();
+
+        // Get data from cloud store
+        scheduleData = cloudDataStore.getData();
+
+        // Listen for data changes from other devices
+        window.addEventListener('schedule-data-changed', (event) => {
+          scheduleData = event.detail.data;
+        });
+
+        // Listen for auth changes
+        authService.onAuthStateChange((event, session) => {
+          user = session?.user || null;
+          if (user && !showAuthModal) {
+            // User signed in, reinitialize cloud store
+            cloudDataStore.initialize();
+          }
+        });
+
+      } catch (error) {
+        console.error('Error initializing app:', error);
+      } finally {
+        isLoading = false;
+      }
+    };
+
+    initializeApp();
+
+    // Cleanup
+    return () => {
+      cloudDataStore.destroy();
+    };
+  });
+
+  // Data management functions with cloud sync
+  async function updateDayData(dayNumber, updatedDay) {
+    // Update via cloud store (handles local update + cloud sync)
+    await cloudDataStore.updateDay(dayNumber, updatedDay);
+
+    // Get updated data from cloud store
+    scheduleData = cloudDataStore.getData();
   }
   
   function updateSummaryStats() {
@@ -121,11 +170,37 @@
   function toggleAdminPanel() {
     showAdminPanel = !showAdminPanel;
   }
+
+  function handleAuthClick() {
+    showAuthModal = true;
+  }
+
+  function handleAuthClose() {
+    showAuthModal = false;
+  }
+
+  function handleAuthenticated() {
+    showAuthModal = false;
+    // Reinitialize cloud store after authentication
+    cloudDataStore.initialize();
+  }
 </script>
 
-<ExportControls {exportHTML} {downloadHTML} />
+{#if isLoading}
+  <div class="loading-screen">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <h2>🏛️ Loading TIA Schedule Builder</h2>
+      <p>Syncing your schedule data...</p>
+    </div>
+  </div>
+{:else}
+  <div class="app-header">
+    <ExportControls {exportHTML} {downloadHTML} />
+    <SyncStatus onAuthClick={handleAuthClick} />
+  </div>
 
-<div class="container" bind:this={reportContainer}>
+  <div class="container" bind:this={reportContainer}>
   <Header />
 
   <!-- Admin Panel Toggle -->
@@ -149,9 +224,81 @@
       <Footer />
     </main>
   {/if}
-</div>
+  </div>
+{/if}
+
+<!-- Authentication Modal -->
+<AuthModal
+  isOpen={showAuthModal}
+  onClose={handleAuthClose}
+  onAuthenticated={handleAuthenticated}
+/>
 
 <style>
+  .loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  .loading-content {
+    text-align: center;
+    color: white;
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .loading-content h2 {
+    margin: 0 0 10px;
+    font-size: 1.5em;
+  }
+
+  .loading-content p {
+    margin: 0;
+    opacity: 0.9;
+  }
+
+  .app-header {
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #eee;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+  }
+
+  @media (max-width: 768px) {
+    .app-header {
+      flex-direction: column;
+      gap: 10px;
+      padding: 15px;
+    }
+  }
   .content {
     padding: 30px;
   }

@@ -4,7 +4,7 @@
   let isEditing = $state(false);
   let editedEvent = $state({});
   
-  const eventTypes = ['recurring', 'special', 'workshop', 'outreach', 'internal'];
+  const eventTypes = ['wildlife rescue', 'nature workshop', 'animal care', 'educational tour', 'conservation project'];
   
   function startEdit() {
     editedEvent = { ...event };
@@ -22,7 +22,7 @@
   }
   
   function handleDelete() {
-    if (confirm(`Remove event "${event.name}"?`)) {
+    if (confirm(`🦋 Remove nature event "${event.name}" from this wildlife day? 🐨`)) {
       onDelete();
     }
   }
@@ -33,30 +33,30 @@
     <div class="edit-form">
       <div class="form-row">
         <label>
-          Event Name:
+          🦋 Nature Adventure Name:
           <input 
             type="text" 
             bind:value={editedEvent.name} 
-            placeholder="e.g., Cat Jam, Paint & Sip"
+            placeholder="🐛 Bug Discovery, 🦎 Lizard Care, 🐨 Possum Rescue"
           />
         </label>
         
         <label>
-          Time:
+          🕐 Adventure Time:
           <input 
             type="text" 
             bind:value={editedEvent.time} 
-            placeholder="e.g., 7:00 pm - 10:00 pm"
+            placeholder="🌅 7:00 am - 🌙 10:00 pm"
           />
         </label>
       </div>
       
       <div class="form-row">
         <label>
-          Event Type:
+          🌿 Adventure Type:
           <select bind:value={editedEvent.type}>
             {#each eventTypes as type}
-              <option value={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</option>
+              <option value={type}>🦘 {type.charAt(0).toUpperCase() + type.slice(1)}</option>
             {/each}
           </select>
         </label>
@@ -64,27 +64,27 @@
       
       <div class="form-actions">
         <button class="save-btn" onclick={saveEdit} disabled={!editedEvent.name || !editedEvent.time}>
-          ✓ Save
+          🦋 Save Nature Adventure 🌿
         </button>
         <button class="cancel-btn" onclick={cancelEdit}>
-          ✕ Cancel
+          🐨 Cancel Changes 🦘
         </button>
       </div>
     </div>
   </div>
 {:else}
-  <div class="event-item" class:recurring={event.type === 'recurring'} class:special={event.type === 'special'} class:workshop={event.type === 'workshop'} class:outreach={event.type === 'outreach'} class:internal={event.type === 'internal'}>
+  <div class="event-item" class:recurring={event.type === 'wildlife rescue'} class:special={event.type === 'nature workshop'} class:workshop={event.type === 'animal care'} class:outreach={event.type === 'educational tour'} class:internal={event.type === 'conservation project'}>
     <div class="event-info">
-      <span class="event-name">{event.name}</span>
-      <span class="event-time">{event.time}</span>
-      <span class="event-type">{event.type}</span>
+      <span class="event-name">🦋 {event.name} 🐨</span>
+      <span class="event-time">🕐 {event.time} 🌱</span>
+      <span class="event-type">🐾 {event.type} 🦎</span>
     </div>
     <div class="event-actions">
-      <button class="edit-btn" onclick={startEdit} title="Edit event">
-        ✏️
+      <button class="edit-btn" onclick={startEdit} title="Edit nature adventure">
+        🌿
       </button>
-      <button class="delete-btn" onclick={handleDelete} title="Remove event">
-        🗑️
+      <button class="delete-btn" onclick={handleDelete} title="Remove nature adventure">
+        🦋
       </button>
     </div>
   </div>

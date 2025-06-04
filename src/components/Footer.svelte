@@ -1,27 +1,29 @@
 <div class="footer">
   <div class="footer-content">
     <div class="footer-section">
-      <h4>📋 Report Details</h4>
-      <p>Generated: {new Date().toLocaleDateString()}</p>
-      <p>Period: June 2025</p>
-      <p>Status: CORRECTED</p>
+      <h4>🦋 Wildlife Museum Report 🐨</h4>
+      <p>🌿 Generated: {new Date().toLocaleDateString()}</p>
+      <p>🦎 Period: June 2025 Nature Adventures</p>
+      <p>🐾 Status: WILDLIFE READY 🦘</p>
     </div>
     
     <div class="footer-section">
-      <h4>🏢 TIA Schedule Builder</h4>
-      <p>Modern workforce management</p>
-      <p>Built with Svelte 5</p>
+      <h4>🐛 TIA Wildlife Museum Scheduler 🌱</h4>
+      <p>🦋 Modern wildlife hero management</p>
+      <p>🐨 Built with love for nature 🌿</p>
+      <p>🦎 Powered by conservation spirit 🐾</p>
     </div>
     
     <div class="footer-section">
-      <h4>📞 Support</h4>
-      <p>Schedule questions: Contact HR</p>
-      <p>Technical issues: IT Support</p>
+      <h4>🦘 Wildlife Support 🐛</h4>
+      <p>🐾 Schedule questions: Contact Museum Director</p>
+      <p>🌿 Animal emergencies: Wildlife Hotline</p>
+      <p>🦋 Technical issues: Nature Tech Support 🐨</p>
     </div>
   </div>
   
   <div class="footer-bottom">
-    <p>&copy; 2025 TIA Schedule Builder. All rights reserved.</p>
+    <p>🦎 &copy; 2025 TIA Wildlife Museum Schedule Builder. Protecting nature, one schedule at a time! 🦋🐨🌿🐾🦘🐛</p>
   </div>
 </div>
 

@@ -60,6 +60,14 @@
     selectedStaff = null;
   }
 
+  function handleOpenDayFromProfile(dayNumber) {
+    closeStaffProfile();
+    const day = fullMonth.find(d => d.day === dayNumber);
+    if (day) {
+      openDayModal(day);
+    }
+  }
+
   function getStaffScheduledDates(staffName) {
     return fullMonth
       .filter(day => day.staff.some(s => s.name === staffName))
@@ -114,7 +122,7 @@
 </script>
 
 <div class="section">
-  <h2>📅 June 2025 Interactive Schedule Calendar</h2>
+  <h2>🦋 June 2025 Wildlife Adventure Calendar 🐨</h2>
   
   <div class="calendar-container">
     {#if isMobile}
@@ -131,18 +139,18 @@
             <div class="mobile-day-header">
               <div class="mobile-day-info">
                 <span class="mobile-day-number">{day.day}</span>
-                <span class="mobile-day-name">{getShortDayName(day.day)}</span>
+                <span class="mobile-day-name">🌿 {getShortDayName(day.day)} 🐾</span>
               </div>
               {#if day.hasEvents}
-                <div class="mobile-event-badge">{day.eventLabel}</div>
+                <div class="mobile-event-badge">🦎 {day.eventLabel} 🐛</div>
               {/if}
             </div>
             
             <div class="mobile-day-content">
               {#if day.staff.length > 0}
                 <div class="mobile-staff-summary">
-                  <div class="mobile-staff-count">{day.staff.length} staff</div>
-                  <div class="mobile-hours">{day.totalHours}</div>
+                  <div class="mobile-staff-count">🦘 {day.staff.length} wildlife heroes</div>
+                  <div class="mobile-hours">🕐 {day.totalHours}</div>
                 </div>
                 <div class="mobile-staff-preview">
                   {#each day.staff.slice(0, 2) as staffMember}
@@ -154,17 +162,17 @@
                       onkeydown={(e) => e.key === 'Enter' && openStaffProfile(e, staffMember)}
                       aria-label="View profile for {staffMember.name}"
                     >
-                      {staffMember.name}
+                      🐾 {staffMember.name}
                     </div>
                   {/each}
                   {#if day.staff.length > 2}
-                    <div class="mobile-more-indicator">+{day.staff.length - 2} more</div>
+                    <div class="mobile-more-indicator">🌱 +{day.staff.length - 2} more heroes</div>
                   {/if}
                 </div>
               {:else}
                 <div class="mobile-no-staff">
-                  <span class="mobile-no-staff-text">No staff scheduled</span>
-                  <span class="mobile-tap-hint">Tap to add</span>
+                  <span class="mobile-no-staff-text">🐨 No wildlife heroes scheduled</span>
+                  <span class="mobile-tap-hint">🦋 Tap to add nature guardians</span>
                 </div>
               {/if}
             </div>
@@ -174,13 +182,13 @@
     {:else}
       <!-- Desktop calendar grid -->
       <div class="calendar-grid">
-        <div class="calendar-header">Sun</div>
-        <div class="calendar-header">Mon</div>
-        <div class="calendar-header">Tue</div>
-        <div class="calendar-header">Wed</div>
-        <div class="calendar-header">Thu</div>
-        <div class="calendar-header">Fri</div>
-        <div class="calendar-header">Sat</div>
+        <div class="calendar-header">🐨 Sun</div>
+        <div class="calendar-header">🦎 Mon</div>
+        <div class="calendar-header">🐛 Tue</div>
+        <div class="calendar-header">🦋 Wed</div>
+        <div class="calendar-header">🌿 Thu</div>
+        <div class="calendar-header">🦘 Fri</div>
+        <div class="calendar-header">🐾 Sat</div>
 
         {#each fullMonth as day}
           <button
@@ -193,7 +201,7 @@
             <div class="day-number">{day.day}</div>
             
             {#if day.hasEvents}
-              <div class="event-indicator">{day.eventLabel}</div>
+              <div class="event-indicator">🦎 {day.eventLabel}</div>
             {/if}
             
             <div class="staff-badges-container">
@@ -206,19 +214,19 @@
                   onkeydown={(e) => e.key === 'Enter' && openStaffProfile(e, staffMember)}
                   aria-label="View profile for {staffMember.name}"
                 >
-                  <span class="staff-name">{staffMember.name}</span>
-                  <span class="staff-time">{staffMember.time}</span>
+                  <span class="staff-name">🐾 {staffMember.name}</span>
+                  <span class="staff-time">🕐 {staffMember.time}</span>
                   {#if staffMember.role}
-                    <span class="staff-role">{staffMember.role}</span>
+                    <span class="staff-role">🦋 {staffMember.role}</span>
                   {/if}
                 </div>
               {/each}
             </div>
             
-            <div class="day-total">{day.totalHours}</div>
+            <div class="day-total">🌱 {day.totalHours}</div>
             
             {#if day.staff.length === 0}
-              <div class="no-staff-indicator">No staff</div>
+              <div class="no-staff-indicator">🐨 No wildlife heroes</div>
             {/if}
           </button>
         {/each}
@@ -240,6 +248,7 @@
   <StaffProfileModal
     staff={selectedStaff}
     onClose={closeStaffProfile}
+    onOpenDay={handleOpenDayFromProfile}
   />
 {/if}
 
@@ -631,5 +640,81 @@
     .staff-badge:hover {
       transform: none;
     }
+  }
+
+  /* Staff Color Classes */
+  .staff-rob {
+    background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
+  }
+  .staff-grace {
+    background: linear-gradient(135deg, #3498db, #2980b9) !important;
+  }
+  .staff-domingo {
+    background: linear-gradient(135deg, #9b59b6, #8e44ad) !important;
+  }
+  .staff-athena {
+    background: linear-gradient(135deg, #e67e22, #d35400) !important;
+  }
+  .staff-miranda {
+    background: linear-gradient(135deg, #1abc9c, #16a085) !important;
+  }
+  .staff-taylor {
+    background: linear-gradient(135deg, #f39c12, #e67e22) !important;
+  }
+  .staff-gemma {
+    background: linear-gradient(135deg, #2ecc71, #27ae60) !important;
+  }
+  .staff-bayla {
+    background: linear-gradient(135deg, #34495e, #2c3e50) !important;
+  }
+  .staff-morph {
+    background: linear-gradient(135deg, #e91e63, #ad1457) !important;
+  }
+  .staff-emilie {
+    background: linear-gradient(135deg, #8e44ad, #7b1fa2) !important;
+  }
+  .staff-cam {
+    background: linear-gradient(135deg, #16a085, #138d75) !important;
+  }
+  .staff-courtney {
+    background: linear-gradient(135deg, #ff6b35, #f7931e) !important;
+  }
+
+  /* Apply colors to mobile staff chips as well */
+  .mobile-staff-chip.staff-rob {
+    background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
+  }
+  .mobile-staff-chip.staff-grace {
+    background: linear-gradient(135deg, #3498db, #2980b9) !important;
+  }
+  .mobile-staff-chip.staff-domingo {
+    background: linear-gradient(135deg, #9b59b6, #8e44ad) !important;
+  }
+  .mobile-staff-chip.staff-athena {
+    background: linear-gradient(135deg, #e67e22, #d35400) !important;
+  }
+  .mobile-staff-chip.staff-miranda {
+    background: linear-gradient(135deg, #1abc9c, #16a085) !important;
+  }
+  .mobile-staff-chip.staff-taylor {
+    background: linear-gradient(135deg, #f39c12, #e67e22) !important;
+  }
+  .mobile-staff-chip.staff-gemma {
+    background: linear-gradient(135deg, #2ecc71, #27ae60) !important;
+  }
+  .mobile-staff-chip.staff-bayla {
+    background: linear-gradient(135deg, #34495e, #2c3e50) !important;
+  }
+  .mobile-staff-chip.staff-morph {
+    background: linear-gradient(135deg, #e91e63, #ad1457) !important;
+  }
+  .mobile-staff-chip.staff-emilie {
+    background: linear-gradient(135deg, #8e44ad, #7b1fa2) !important;
+  }
+  .mobile-staff-chip.staff-cam {
+    background: linear-gradient(135deg, #16a085, #138d75) !important;
+  }
+  .mobile-staff-chip.staff-courtney {
+    background: linear-gradient(135deg, #ff6b35, #f7931e) !important;
   }
 </style>

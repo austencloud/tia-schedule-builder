@@ -20,12 +20,11 @@
   }
   
   function handleDelete() {
-    if (confirm(`Remove ${staffMember.name} from this day?`)) {
+    if (confirm(`🦋 Remove ${staffMember.name} from this wildlife adventure day? 🐨`)) {
       onDelete();
     }
   }
   
-  // Time validation
   function validateTime(timeStr) {
     const timePattern = /^(\d{1,2})(:\d{2})?\s*(am|pm)?(\s*-\s*(\d{1,2})(:\d{2})?\s*(am|pm)?)?$/i;
     return timePattern.test(timeStr.trim());
@@ -37,16 +36,16 @@
     <div class="edit-form">
       <div class="form-row">
         <label>
-          Name:
+          🐾 Wildlife Hero Name:
           <select bind:value={editedStaff.name}>
             {#each Object.values(staffList) as staff}
-              <option value={staff.name}>{staff.name}</option>
+              <option value={staff.name}>🦋 {staff.name}</option>
             {/each}
           </select>
         </label>
         
         <label>
-          Time:
+          🕐 Rescue Hours:
           <input
             type="time"
             bind:value={editedStaff.time}
@@ -59,19 +58,19 @@
       
       <div class="form-row">
         <label>
-          Role (optional):
+          🦎 Nature Role (optional):
           <input 
             type="text" 
             bind:value={editedStaff.role} 
-            placeholder="e.g., Animal, Lab, Training"
+            placeholder="🐛 Animal Care, 🌿 Lab Work, 🦘 Training"
           />
         </label>
         
         <label>
-          Color:
+          🌈 Hero Color:
           <select bind:value={editedStaff.color}>
             {#each Object.values(staffList) as staff}
-              <option value={staff.color}>{staff.name} Color</option>
+              <option value={staff.color}>🎨 {staff.name} Color</option>
             {/each}
           </select>
         </label>
@@ -79,10 +78,10 @@
       
       <div class="form-actions">
         <button class="save-btn" onclick={saveEdit} disabled={!editedStaff.name || !editedStaff.time || (editedStaff.time && !validateTime(editedStaff.time))}>
-          ✓ Save
+          🦋 Save Wildlife Hero 🌿
         </button>
         <button class="cancel-btn" onclick={cancelEdit}>
-          ✕ Cancel
+          🐨 Cancel Changes 🦘
         </button>
       </div>
     </div>
@@ -90,18 +89,18 @@
 {:else}
   <div class="staff-item {staffMember.color}">
     <div class="staff-info">
-      <span class="staff-name">{staffMember.name}</span>
-      <span class="staff-time">{staffMember.time}</span>
+      <span class="staff-name">🐾 {staffMember.name}</span>
+      <span class="staff-time">🕐 {staffMember.time}</span>
       {#if staffMember.role}
-        <span class="staff-role">{staffMember.role}</span>
+        <span class="staff-role">🦎 {staffMember.role} 🐛</span>
       {/if}
     </div>
     <div class="staff-actions">
-      <button class="edit-btn" onclick={startEdit} title="Edit staff member">
-        ✏️
+      <button class="edit-btn" onclick={startEdit} title="Edit wildlife hero">
+        🌿
       </button>
-      <button class="delete-btn" onclick={handleDelete} title="Remove staff member">
-        🗑️
+      <button class="delete-btn" onclick={handleDelete} title="Remove wildlife hero">
+        🦋
       </button>
     </div>
   </div>
@@ -285,5 +284,43 @@
       margin-left: 0;
       margin-top: 10px;
     }
+  }
+
+  /* Staff Color Classes */
+  .staff-rob {
+    background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
+  }
+  .staff-grace {
+    background: linear-gradient(135deg, #3498db, #2980b9) !important;
+  }
+  .staff-domingo {
+    background: linear-gradient(135deg, #9b59b6, #8e44ad) !important;
+  }
+  .staff-athena {
+    background: linear-gradient(135deg, #e67e22, #d35400) !important;
+  }
+  .staff-miranda {
+    background: linear-gradient(135deg, #1abc9c, #16a085) !important;
+  }
+  .staff-taylor {
+    background: linear-gradient(135deg, #f39c12, #e67e22) !important;
+  }
+  .staff-gemma {
+    background: linear-gradient(135deg, #2ecc71, #27ae60) !important;
+  }
+  .staff-bayla {
+    background: linear-gradient(135deg, #34495e, #2c3e50) !important;
+  }
+  .staff-morph {
+    background: linear-gradient(135deg, #e91e63, #ad1457) !important;
+  }
+  .staff-emilie {
+    background: linear-gradient(135deg, #8e44ad, #7b1fa2) !important;
+  }
+  .staff-cam {
+    background: linear-gradient(135deg, #16a085, #138d75) !important;
+  }
+  .staff-courtney {
+    background: linear-gradient(135deg, #ff6b35, #f7931e) !important;
   }
 </style>

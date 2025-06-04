@@ -1,7 +1,10 @@
 <script>
-  let { staff, onClose } = $props();
+  let { staff, onClose, onOpenDay } = $props();
   
   let isMobile = $state(false);
+  let isEditing = $state(false);
+  let editedStaff = $state({});
+  let showSuccessMessage = $state(false);
   
   $effect(() => {
     if (typeof window !== 'undefined') {
@@ -16,6 +19,43 @@
   function handleBackdropClick(event) {
     if (event.target === event.currentTarget) {
       onClose();
+    }
+  }
+
+  function startEdit() {
+    editedStaff = {
+      ...staff,
+      contact: { ...getStaffContact(staff.name) },
+      emergencyContact: getEmergencyContact(staff.name),
+      medicalInfo: getMedicalInfo(staff.name)
+    };
+    isEditing = true;
+  }
+
+  function saveEdit() {
+    // Save to localStorage
+    const existingProfiles = JSON.parse(localStorage.getItem('staffProfiles') || '{}');
+    existingProfiles[staff.name] = {
+      contact: editedStaff.contact,
+      emergencyContact: editedStaff.emergencyContact,
+      medicalInfo: editedStaff.medicalInfo
+    };
+    localStorage.setItem('staffProfiles', JSON.stringify(existingProfiles));
+    
+    showSuccessMessage = true;
+    setTimeout(() => showSuccessMessage = false, 3000);
+    isEditing = false;
+  }
+
+  function cancelEdit() {
+    editedStaff = {};
+    isEditing = false;
+  }
+
+  function handleDayClick(schedule) {
+    onClose();
+    if (onOpenDay) {
+      onOpenDay(schedule.day);
     }
   }
 
@@ -38,25 +78,36 @@
   }
 
   function getStaffContact(staffName) {
-    const contactMap = {
-      'Rob': { email: 'rob@tiamuseum.org', phone: '(555) 0101', department: 'Animal Care & Education' },
-      'Grace': { email: 'grace@tiamuseum.org', phone: '(555) 0102', department: 'Animal Care' },
-      'Domingo': { email: 'domingo@tiamuseum.org', phone: '(555) 0103', department: 'Events & Education' },
-      'Athena': { email: 'athena@tiamuseum.org', phone: '(555) 0104', department: 'Laboratory' },
-      'Miranda': { email: 'miranda@tiamuseum.org', phone: '(555) 0105', department: 'Animal Care & Events' },
-      'Taylor': { email: 'taylor@tiamuseum.org', phone: '(555) 0106', department: 'Animal Care & Outreach' },
-      'Gemma': { email: 'gemma@tiamuseum.org', phone: '(555) 0107', department: 'Guest Services' },
-      'Bayla': { email: 'bayla@tiamuseum.org', phone: '(555) 0108', department: 'Laboratory & Education' },
-      'Morph': { email: 'morph@tiamuseum.org', phone: '(555) 0109', department: 'Operations' },
-      'Emilie': { email: 'emilie@tiamuseum.org', phone: '(555) 0110', department: 'Animal Care Lead' },
-      'Cam': { email: 'cam@tiamuseum.org', phone: '(555) 0111', department: 'Laboratory & Training' },
-      'Courtney': { email: 'courtney@tiamuseum.org', phone: '(555) 0112', department: 'Guest Services' }
+    const savedProfiles = JSON.parse(localStorage.getItem('staffProfiles') || '{}');
+    return savedProfiles[staffName]?.contact || { 
+      email: 'staff@tiamuseum.org', 
+      phone: '(555) 555-5555', 
+      department: 'General Staff' 
     };
-    return contactMap[staffName] || { email: 'staff@tiamuseum.org', phone: '(555) 0100', department: 'General' };
+  }
+
+  function getEmergencyContact(staffName) {
+    const savedProfiles = JSON.parse(localStorage.getItem('staffProfiles') || '{}');
+    return savedProfiles[staffName]?.emergencyContact || { 
+      name: 'John Smith', 
+      relationship: 'Emergency Contact', 
+      phone: '(555) 555-5555' 
+    };
+  }
+
+  function getMedicalInfo(staffName) {
+    const savedProfiles = JSON.parse(localStorage.getItem('staffProfiles') || '{}');
+    return savedProfiles[staffName]?.medicalInfo || { 
+      allergies: 'None known', 
+      medications: 'None', 
+      conditions: 'None' 
+    };
   }
 
   let skills = $derived(getStaffSkills(staff.name));
-  let contact = $derived(getStaffContact(staff.name));
+  let contact = $derived(isEditing ? editedStaff.contact : getStaffContact(staff.name));
+  let emergencyContact = $derived(isEditing ? editedStaff.emergencyContact : getEmergencyContact(staff.name));
+  let medicalInfo = $derived(isEditing ? editedStaff.medicalInfo : getMedicalInfo(staff.name));
 </script>
 
 <div 
@@ -85,16 +136,37 @@
     <div class="modal-body">
       <div class="info-section">
         <h3>📞 Contact Information</h3>
-        <div class="contact-grid">
-          <div class="contact-item">
-            <span class="contact-label">Email:</span>
-            <span class="contact-value">{contact.email}</span>
+        {#if isEditing}
+          <div class="edit-form">
+            <div class="form-row">
+              <label>
+                Email:
+                <input type="email" bind:value={editedStaff.contact.email} />
+              </label>
+              <label>
+                Phone:
+                <input type="tel" bind:value={editedStaff.contact.phone} />
+              </label>
+            </div>
+            <div class="form-row">
+              <label>
+                Department:
+                <input type="text" bind:value={editedStaff.contact.department} />
+              </label>
+            </div>
           </div>
-          <div class="contact-item">
-            <span class="contact-label">Phone:</span>
-            <span class="contact-value">{contact.phone}</span>
+        {:else}
+          <div class="contact-grid">
+            <div class="contact-item">
+              <span class="contact-label">Email:</span>
+              <span class="contact-value">{contact.email}</span>
+            </div>
+            <div class="contact-item">
+              <span class="contact-label">Phone:</span>
+              <span class="contact-value">{contact.phone}</span>
+            </div>
           </div>
-        </div>
+        {/if}
       </div>
 
       <div class="info-section">
@@ -111,7 +183,7 @@
         {#if staff.scheduledDates && staff.scheduledDates.length > 0}
           <div class="schedule-list">
             {#each staff.scheduledDates as schedule}
-              <div class="schedule-item">
+              <div class="schedule-item" onclick={() => handleDayClick(schedule)}>
                 <div class="schedule-date">
                   <span class="schedule-day">{schedule.day}</span>
                   <span class="schedule-day-name">{schedule.dayName}</span>
@@ -128,6 +200,102 @@
         {:else}
           <div class="no-schedule">
             <p>No scheduled dates this month</p>
+          </div>
+        {/if}
+      </div>
+
+      <div class="info-section">
+        <h3>🚑 Emergency Contact</h3>
+        {#if isEditing}
+          <div class="edit-form">
+            <div class="form-row">
+              <label>
+                Name:
+                <input type="text" bind:value={editedStaff.emergencyContact.name} />
+              </label>
+              <label>
+                Relationship:
+                <input type="text" bind:value={editedStaff.emergencyContact.relationship} />
+              </label>
+            </div>
+            <div class="form-row">
+              <label>
+                Phone:
+                <input type="tel" bind:value={editedStaff.emergencyContact.phone} />
+              </label>
+            </div>
+          </div>
+        {:else}
+          <div class="contact-grid">
+            <div class="contact-item">
+              <span class="contact-label">Name:</span>
+              <span class="contact-value">{emergencyContact.name}</span>
+            </div>
+            <div class="contact-item">
+              <span class="contact-label">Relationship:</span>
+              <span class="contact-value">{emergencyContact.relationship}</span>
+            </div>
+            <div class="contact-item">
+              <span class="contact-label">Phone:</span>
+              <span class="contact-value">{emergencyContact.phone}</span>
+            </div>
+          </div>
+        {/if}
+      </div>
+
+      <div class="info-section">
+        <h3>💊 Medical Information</h3>
+        {#if isEditing}
+          <div class="edit-form">
+            <div class="form-row">
+              <label>
+                Allergies:
+                <input type="text" bind:value={editedStaff.medicalInfo.allergies} />
+              </label>
+              <label>
+                Medications:
+                <input type="text" bind:value={editedStaff.medicalInfo.medications} />
+              </label>
+            </div>
+            <div class="form-row">
+              <label>
+                Medical Conditions:
+                <input type="text" bind:value={editedStaff.medicalInfo.conditions} />
+              </label>
+            </div>
+          </div>
+        {:else}
+          <div class="medical-info-grid">
+            <div class="medical-info-item">
+              <span class="medical-info-label">Allergies:</span>
+              <span class="medical-info-value">{medicalInfo.allergies}</span>
+            </div>
+            <div class="medical-info-item">
+              <span class="medical-info-label">Medications:</span>
+              <span class="medical-info-value">{medicalInfo.medications}</span>
+            </div>
+            <div class="medical-info-item">
+              <span class="medical-info-label">Conditions:</span>
+              <span class="medical-info-value">{medicalInfo.conditions}</span>
+            </div>
+          </div>
+        {/if}
+      </div>
+
+      <div class="edit-section" class:mobile={isMobile}>
+        {#if showSuccessMessage}
+          <div class="success-message" class:mobile={isMobile}>
+            <p>Changes saved successfully!</p>
+          </div>
+        {/if}
+        {#if !isEditing}
+          <button class="edit-btn" onclick={startEdit} class:mobile={isMobile}>
+            Edit Profile
+          </button>
+        {:else}
+          <div class="edit-actions">
+            <button class="save-btn" onclick={saveEdit}>Save</button>
+            <button class="cancel-btn" onclick={cancelEdit}>Cancel</button>
           </div>
         {/if}
       </div>
@@ -337,6 +505,12 @@
     justify-content: space-between;
     align-items: center;
     border-left: 4px solid #27ae60;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .schedule-item:hover {
+    background: #ecf0f1;
   }
 
   .schedule-date {
@@ -388,6 +562,171 @@
     border-radius: 12px;
   }
 
+  .medical-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+  }
+
+  .medical-info-item {
+    background: #f8f9fa;
+    padding: 16px;
+    border-radius: 12px;
+    border-left: 4px solid #e67e22;
+  }
+
+  .medical-info-label {
+    display: block;
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .medical-info-value {
+    display: block;
+    font-size: 1rem;
+    color: #2c3e50;
+    font-weight: 500;
+  }
+
+  .edit-section {
+    margin-top: 24px;
+    text-align: center;
+  }
+
+  .edit-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .edit-btn:hover {
+    background: linear-gradient(135deg, #764ba2, #667eea);
+  }
+
+  .success-message {
+    background: #d4edda;
+    color: #155724;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .edit-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .save-btn, .cancel-btn {
+    background: #27ae60;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 44px;
+  }
+
+  .save-btn:hover {
+    background: #229954;
+    transform: translateY(-1px);
+  }
+
+  .cancel-btn {
+    background: #e74c3c;
+  }
+
+  .cancel-btn:hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+  }
+
+  .edit-form {
+    margin-top: 16px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .form-row label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 0.9rem;
+  }
+
+  .form-row input {
+    padding: 12px 16px;
+    border: 2px solid #ecf0f1;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+    min-height: 44px;
+    font-family: inherit;
+  }
+
+  .form-row input:focus {
+    outline: none;
+    border-color: #3498db;
+  }
+
+  /* Staff Avatar Color Classes */
+  .staff-avatar.staff-rob {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+  }
+  .staff-avatar.staff-grace {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+  }
+  .staff-avatar.staff-domingo {
+    background: linear-gradient(135deg, #9b59b6, #8e44ad);
+  }
+  .staff-avatar.staff-athena {
+    background: linear-gradient(135deg, #e67e22, #d35400);
+  }
+  .staff-avatar.staff-miranda {
+    background: linear-gradient(135deg, #1abc9c, #16a085);
+  }
+  .staff-avatar.staff-taylor {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+  }
+  .staff-avatar.staff-gemma {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+  }
+  .staff-avatar.staff-bayla {
+    background: linear-gradient(135deg, #34495e, #2c3e50);
+  }
+  .staff-avatar.staff-morph {
+    background: linear-gradient(135deg, #e91e63, #ad1457);
+  }
+  .staff-avatar.staff-emilie {
+    background: linear-gradient(135deg, #8e44ad, #7b1fa2);
+  }
+  .staff-avatar.staff-cam {
+    background: linear-gradient(135deg, #16a085, #138d75);
+  }
+  .staff-avatar.staff-courtney {
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+  }
+
   @media (max-width: 480px) {
     .modal-backdrop {
       padding: 10px;
@@ -419,6 +758,10 @@
 
     .schedule-details {
       align-items: flex-start;
+    }
+
+    .medical-info-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>

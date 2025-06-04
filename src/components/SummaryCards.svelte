@@ -4,20 +4,20 @@
 
 <div class="summary-cards">
   <div class="card cost">
-    <div class="card-value">{data.estimatedPayroll}</div>
-    <div class="card-label">Estimated Monthly Payroll</div>
+    <div class="card-value">🦋 {data.estimatedPayroll}</div>
+    <div class="card-label">💰 Estimated Wildlife Hero Budget 🌿</div>
   </div>
   <div class="card hours">
-    <div class="card-value">{data.totalHours}</div>
-    <div class="card-label">Total Monthly Hours</div>
+    <div class="card-value">🕐 {data.totalHours}</div>
+    <div class="card-label">⏰ Total Nature Rescue Hours 🐾</div>
   </div>
   <div class="card staff">
-    <div class="card-value">{data.staffScheduled}</div>
-    <div class="card-label">Staff Actually Scheduled</div>
+    <div class="card-value">🦎 {data.staffScheduled}</div>
+    <div class="card-label">🐨 Wildlife Heroes Scheduled 🦘</div>
   </div>
   <div class="card days">
-    <div class="card-value">{data.daysWithCoverage}</div>
-    <div class="card-label">Days with Coverage (June)</div>
+    <div class="card-value">🌱 {data.daysWithCoverage}</div>
+    <div class="card-label">📅 Days with Animal Protection 🐛</div>
   </div>
 </div>
 

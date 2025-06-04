@@ -2,6 +2,7 @@
   import StaffEditor from './StaffEditor.svelte';
   import EventEditor from './EventEditor.svelte';
   import MobileModal from './MobileModal.svelte';
+  import StaffProfileModal from './StaffProfileModal.svelte';
 
   let { day, staffList, onClose, onDayUpdate } = $props();
 
@@ -24,6 +25,8 @@
   let isEditing = $state(false);
   let editedDay = $state({});
   let showSuccessMessage = $state(false);
+  let showStaffProfile = $state(false);
+  let selectedStaff = $state(null);
   
   function handleBackdropClick(event) {
     if (event.target === event.currentTarget) {
@@ -127,6 +130,34 @@
     editedDay.events.splice(index, 1);
   }
   
+  function openStaffProfile(event, staffMember) {
+    event.stopPropagation();
+    selectedStaff = {
+      ...staffMember,
+      scheduledDates: getStaffScheduledDates(staffMember.name)
+    };
+    showStaffProfile = true;
+    
+    if (isMobile && navigator.vibrate) {
+      navigator.vibrate(15);
+    }
+  }
+
+  function closeStaffProfile() {
+    showStaffProfile = false;
+    selectedStaff = null;
+  }
+
+  function getStaffScheduledDates(staffName) {
+    return [{
+      day: day.day,
+      dayName: day.dayName,
+      date: day.date,
+      time: day.staff.find(s => s.name === staffName)?.time,
+      role: day.staff.find(s => s.name === staffName)?.role
+    }];
+  }
+  
   let currentDay = $derived(isEditing ? editedDay : day);
 </script>
 
@@ -134,20 +165,20 @@
   <MobileModal
     isOpen={true}
     {onClose}
-    title="{currentDay.dayName}, June {currentDay.day}, 2025"
+    title="🦎 {currentDay.dayName}, June {currentDay.day}, 2025 🐛"
   >
     {#snippet children()}
       <div class="mobile-modal-header-actions">
         {#if !isEditing}
           <button class="mobile-edit-btn" onclick={startEdit}>
-            ✏️ Edit Day
+            🐾 Edit Wildlife Day 🌿
           </button>
         {/if}
       </div>
 
       {#if showSuccessMessage}
         <div class="success-message mobile">
-          ✅ Day updated successfully!
+          🦋 Wildlife schedule updated successfully! 🐨
         </div>
       {/if}
 
@@ -155,26 +186,26 @@
       <div class="mobile-day-content">
         <div class="mobile-day-stats">
           <div class="mobile-stat">
-            <span class="mobile-stat-value">{currentDay.totalHours}</span>
-            <span class="mobile-stat-label">Total Hours</span>
+            <span class="mobile-stat-value">🕐 {currentDay.totalHours}</span>
+            <span class="mobile-stat-label">🌱 Rescue Hours</span>
           </div>
           <div class="mobile-stat">
-            <span class="mobile-stat-value">{currentDay.staff.length}</span>
-            <span class="mobile-stat-label">Staff Count</span>
+            <span class="mobile-stat-value">🐾 {currentDay.staff.length}</span>
+            <span class="mobile-stat-label">🦘 Wildlife Heroes</span>
           </div>
           <div class="mobile-stat">
-            <span class="mobile-stat-value">{currentDay.events.length}</span>
-            <span class="mobile-stat-label">Events</span>
+            <span class="mobile-stat-value">🦋 {currentDay.events.length}</span>
+            <span class="mobile-stat-label">🌿 Nature Events</span>
           </div>
         </div>
 
         <!-- Mobile staff section -->
         <div class="mobile-section">
           <div class="mobile-section-header">
-            <h4>👥 Staff Schedule</h4>
+            <h4>🐨 Wildlife Rescue Team 🦎</h4>
             {#if isEditing}
               <button class="mobile-add-btn" onclick={addStaff}>
-                ➕ Add Staff
+                🐛 Add Wildlife Hero 🌿
               </button>
             {/if}
           </div>
@@ -190,12 +221,12 @@
                     onDelete={() => deleteStaff(index)}
                   />
                 {:else}
-                  <div class="mobile-staff-item {staffMember.color}">
+                  <div class="mobile-staff-item {staffMember.color}" onclick={(e) => openStaffProfile(e, staffMember)}>
                     <div class="mobile-staff-info">
-                      <span class="mobile-staff-name">{staffMember.name}</span>
-                      <span class="mobile-staff-time">{staffMember.time}</span>
+                      <span class="mobile-staff-name">🐾 {staffMember.name} 🦋</span>
+                      <span class="mobile-staff-time">🕐 {staffMember.time} 🌱</span>
                       {#if staffMember.role}
-                        <span class="mobile-staff-role">{staffMember.role}</span>
+                        <span class="mobile-staff-role">🦎 {staffMember.role} 🐛</span>
                       {/if}
                     </div>
                   </div>
@@ -204,10 +235,10 @@
             </div>
           {:else}
             <div class="mobile-no-content">
-              <p>No staff scheduled for this day.</p>
+              <p>🐨 No wildlife heroes scheduled for this day! 🦘</p>
               {#if isEditing}
                 <button class="mobile-add-first-btn" onclick={addStaff}>
-                  ➕ Add First Staff Member
+                  🐾 Add First Wildlife Hero 🌿
                 </button>
               {/if}
             </div>
@@ -217,10 +248,10 @@
         <!-- Mobile events section -->
         <div class="mobile-section">
           <div class="mobile-section-header">
-            <h4>🎉 Events</h4>
+            <h4>🦋 Nature Adventures & Rescues 🐛</h4>
             {#if isEditing}
               <button class="mobile-add-btn" onclick={addEvent}>
-                ➕ Add Event
+                🌿 Add Nature Event 🦎
               </button>
             {/if}
           </div>
@@ -237,9 +268,9 @@
                 {:else}
                   <div class="mobile-event-item">
                     <div class="mobile-event-info">
-                      <span class="mobile-event-name">{event.name}</span>
-                      <span class="mobile-event-time">{event.time}</span>
-                      <span class="mobile-event-type">{event.type}</span>
+                      <span class="mobile-event-name">🦋 {event.name} 🐨</span>
+                      <span class="mobile-event-time">🕐 {event.time} 🌱</span>
+                      <span class="mobile-event-type">🐾 {event.type} 🦎</span>
                     </div>
                   </div>
                 {/if}
@@ -247,10 +278,10 @@
             </div>
           {:else}
             <div class="mobile-no-content">
-              <p>No special events scheduled for this day.</p>
+              <p>🦘 No special nature events scheduled for this day! 🐛</p>
               {#if isEditing}
                 <button class="mobile-add-first-btn" onclick={addEvent}>
-                  ➕ Add First Event
+                  🌿 Add First Nature Adventure 🦋
                 </button>
               {/if}
             </div>
@@ -260,10 +291,10 @@
         {#if isEditing}
           <div class="mobile-edit-actions">
             <button class="mobile-save-btn" onclick={saveChanges}>
-              ✅ Save Changes
+              🦋 Save Wildlife Schedule 🐨
             </button>
             <button class="mobile-cancel-btn" onclick={cancelEdit}>
-              ❌ Cancel
+              🐾 Cancel Changes 🌿
             </button>
           </div>
         {/if}
@@ -282,45 +313,45 @@
   >
     <div class="modal-content">
       <div class="modal-header">
-        <h3 id="modal-title">{currentDay.dayName}, June {currentDay.day}, 2025</h3>
+        <h3 id="modal-title">🦎 {currentDay.dayName}, June {currentDay.day}, 2025 🐛</h3>
         <div class="header-actions">
           {#if !isEditing}
-            <button class="edit-btn" onclick={startEdit} title="Edit this day">
-              ✏️ Edit Day
+            <button class="edit-btn" onclick={startEdit} title="Edit this wildlife day">
+              🐾 Edit Wildlife Day 🌿
             </button>
           {/if}
-          <button class="close-btn" onclick={onClose}>×</button>
+          <button class="close-btn" onclick={onClose}>🦋</button>
         </div>
       </div>
     
     {#if showSuccessMessage}
       <div class="success-message">
-        ✅ Day updated successfully!
+        🦋 Wildlife schedule updated successfully! 🐨
       </div>
     {/if}
     
     <div class="modal-body">
       <div class="day-stats">
         <div class="stat">
-          <span class="stat-label">Total Hours:</span>
-          <span class="stat-value">{currentDay.totalHours}</span>
+          <span class="stat-label">🕐 Rescue Hours:</span>
+          <span class="stat-value">🌱 {currentDay.totalHours}</span>
         </div>
         <div class="stat">
-          <span class="stat-label">Staff Count:</span>
-          <span class="stat-value">{currentDay.staff.length}</span>
+          <span class="stat-label">🐾 Wildlife Heroes:</span>
+          <span class="stat-value">🦘 {currentDay.staff.length}</span>
         </div>
         <div class="stat">
-          <span class="stat-label">Events:</span>
-          <span class="stat-value">{currentDay.events.length}</span>
+          <span class="stat-label">🦋 Nature Events:</span>
+          <span class="stat-value">🌿 {currentDay.events.length}</span>
         </div>
       </div>
       
       <div class="staff-section">
         <div class="section-header">
-          <h4>👥 Staff Schedule</h4>
+          <h4>🐨 Wildlife Rescue Team 🦎</h4>
           {#if isEditing}
-            <button class="add-btn" onclick={addStaff} title="Add staff member">
-              ➕ Add Staff
+            <button class="add-btn" onclick={addStaff} title="Add wildlife hero">
+              🐛 Add Wildlife Hero 🌿
             </button>
           {/if}
         </div>
@@ -336,12 +367,12 @@
                   onDelete={() => deleteStaff(index)}
                 />
               {:else}
-                <div class="staff-item {staffMember.color}">
+                <div class="staff-item {staffMember.color}" onclick={(e) => openStaffProfile(e, staffMember)}>
                   <div class="staff-info">
-                    <span class="staff-name">{staffMember.name}</span>
-                    <span class="staff-time">{staffMember.time}</span>
+                    <span class="staff-name">🐾 {staffMember.name} 🦋</span>
+                    <span class="staff-time">🕐 {staffMember.time} 🌱</span>
                     {#if staffMember.role}
-                      <span class="staff-role">{staffMember.role}</span>
+                      <span class="staff-role">🦎 {staffMember.role} 🐛</span>
                     {/if}
                   </div>
                 </div>
@@ -350,10 +381,10 @@
           </div>
         {:else}
           <div class="no-staff">
-            <p>No staff scheduled for this day.</p>
+            <p>🐨 No wildlife heroes scheduled for this day! 🦘</p>
             {#if isEditing}
               <button class="add-first-btn" onclick={addStaff}>
-                ➕ Add First Staff Member
+                🐾 Add First Wildlife Hero 🌿
               </button>
             {/if}
           </div>
@@ -362,10 +393,10 @@
       
       <div class="events-section">
         <div class="section-header">
-          <h4>🎉 Events</h4>
+          <h4>🦋 Nature Adventures & Rescues 🐛</h4>
           {#if isEditing}
-            <button class="add-btn" onclick={addEvent} title="Add event">
-              ➕ Add Event
+            <button class="add-btn" onclick={addEvent} title="Add nature event">
+              🌿 Add Nature Event 🦎
             </button>
           {/if}
         </div>
@@ -382,9 +413,9 @@
               {:else}
                 <div class="event-item">
                   <div class="event-info">
-                    <span class="event-name">{event.name}</span>
-                    <span class="event-time">{event.time}</span>
-                    <span class="event-type">{event.type}</span>
+                    <span class="event-name">🦋 {event.name} 🐨</span>
+                    <span class="event-time">🕐 {event.time} 🌱</span>
+                    <span class="event-type">🐾 {event.type} 🦎</span>
                   </div>
                 </div>
               {/if}
@@ -392,10 +423,10 @@
           </div>
         {:else}
           <div class="no-events">
-            <p>No special events scheduled for this day.</p>
+            <p>🦘 No special nature events scheduled for this day! 🐛</p>
             {#if isEditing}
               <button class="add-first-btn" onclick={addEvent}>
-                ➕ Add First Event
+                🌿 Add First Nature Adventure 🦋
               </button>
             {/if}
           </div>
@@ -405,16 +436,23 @@
       {#if isEditing}
         <div class="edit-actions">
           <button class="save-btn" onclick={saveChanges}>
-            ✅ Save Changes
+            🦋 Save Wildlife Schedule 🐨
           </button>
           <button class="cancel-btn" onclick={cancelEdit}>
-            ❌ Cancel
+            🐾 Cancel Changes 🌿
           </button>
         </div>
       {/if}
     </div>
   </div>
   </div>
+{/if}
+
+{#if showStaffProfile && selectedStaff}
+  <StaffProfileModal
+    staff={selectedStaff}
+    onClose={closeStaffProfile}
+  />
 {/if}
 
 <style>
@@ -602,6 +640,13 @@
     border-radius: 10px;
     color: white;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .staff-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   }
 
   .staff-info {
@@ -827,6 +872,14 @@
     border-radius: 12px;
     color: white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-staff-item:active {
+    transform: scale(0.98);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
   .mobile-staff-info {
@@ -965,5 +1018,43 @@
     .edit-actions {
       flex-direction: column;
     }
+  }
+
+  /* Staff Color Classes */
+  .staff-rob, .mobile-staff-item.staff-rob {
+    background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
+  }
+  .staff-grace, .mobile-staff-item.staff-grace {
+    background: linear-gradient(135deg, #3498db, #2980b9) !important;
+  }
+  .staff-domingo, .mobile-staff-item.staff-domingo {
+    background: linear-gradient(135deg, #9b59b6, #8e44ad) !important;
+  }
+  .staff-athena, .mobile-staff-item.staff-athena {
+    background: linear-gradient(135deg, #e67e22, #d35400) !important;
+  }
+  .staff-miranda, .mobile-staff-item.staff-miranda {
+    background: linear-gradient(135deg, #1abc9c, #16a085) !important;
+  }
+  .staff-taylor, .mobile-staff-item.staff-taylor {
+    background: linear-gradient(135deg, #f39c12, #e67e22) !important;
+  }
+  .staff-gemma, .mobile-staff-item.staff-gemma {
+    background: linear-gradient(135deg, #2ecc71, #27ae60) !important;
+  }
+  .staff-bayla, .mobile-staff-item.staff-bayla {
+    background: linear-gradient(135deg, #34495e, #2c3e50) !important;
+  }
+  .staff-morph, .mobile-staff-item.staff-morph {
+    background: linear-gradient(135deg, #e91e63, #ad1457) !important;
+  }
+  .staff-emilie, .mobile-staff-item.staff-emilie {
+    background: linear-gradient(135deg, #8e44ad, #7b1fa2) !important;
+  }
+  .staff-cam, .mobile-staff-item.staff-cam {
+    background: linear-gradient(135deg, #16a085, #138d75) !important;
+  }
+  .staff-courtney, .mobile-staff-item.staff-courtney {
+    background: linear-gradient(135deg, #ff6b35, #f7931e) !important;
   }
 </style>
