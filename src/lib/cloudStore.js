@@ -1,5 +1,5 @@
-import { scheduleService, authService } from './supabase.js';
-import { initialData } from '../data/scheduleData.js';
+import { scheduleService, authService } from "./supabase.js";
+import { scheduleData as initialData } from "../data/scheduleData.js";
 
 // Cloud-enabled data store with offline support
 export class CloudDataStore {
@@ -9,14 +9,14 @@ export class CloudDataStore {
     this.pendingChanges = [];
     this.lastSyncTime = null;
     this.realtimeSubscription = null;
-    
+
     // Listen for online/offline events
-    window.addEventListener('online', () => {
+    window.addEventListener("online", () => {
       this.isOnline = true;
       this.syncPendingChanges();
     });
-    
-    window.addEventListener('offline', () => {
+
+    window.addEventListener("offline", () => {
       this.isOnline = false;
     });
   }
@@ -26,7 +26,7 @@ export class CloudDataStore {
     try {
       // Check if user is authenticated
       const user = await authService.getCurrentUser();
-      
+
       if (user) {
         // Load data from cloud
         await this.loadFromCloud();
@@ -37,7 +37,7 @@ export class CloudDataStore {
         this.loadFromLocal();
       }
     } catch (error) {
-      console.error('Error initializing cloud store:', error);
+      console.error("Error initializing cloud store:", error);
       // Fallback to local data
       this.loadFromLocal();
     }
@@ -47,12 +47,12 @@ export class CloudDataStore {
   async loadFromCloud() {
     try {
       const cloudData = await scheduleService.getCurrentSchedule();
-      
+
       if (cloudData && cloudData.data) {
         // Use cloud data
         this.data = cloudData.data;
         this.lastSyncTime = new Date(cloudData.updated_at);
-        
+
         // Cache locally for offline use
         this.saveToLocal(this.data);
       } else {
@@ -61,7 +61,7 @@ export class CloudDataStore {
         await this.saveToCloud();
       }
     } catch (error) {
-      console.error('Error loading from cloud:', error);
+      console.error("Error loading from cloud:", error);
       // Fallback to local data
       this.loadFromLocal();
     }
@@ -70,7 +70,7 @@ export class CloudDataStore {
   // Load data from local storage
   loadFromLocal() {
     try {
-      const localData = localStorage.getItem('tia-schedule-data');
+      const localData = localStorage.getItem("tia-schedule-data");
       if (localData) {
         this.data = JSON.parse(localData);
       } else {
@@ -78,7 +78,7 @@ export class CloudDataStore {
         this.saveToLocal(this.data);
       }
     } catch (error) {
-      console.error('Error loading from local storage:', error);
+      console.error("Error loading from local storage:", error);
       this.data = structuredClone(initialData);
     }
   }
@@ -86,10 +86,10 @@ export class CloudDataStore {
   // Save data to local storage
   saveToLocal(data) {
     try {
-      localStorage.setItem('tia-schedule-data', JSON.stringify(data));
-      localStorage.setItem('tia-schedule-last-sync', new Date().toISOString());
+      localStorage.setItem("tia-schedule-data", JSON.stringify(data));
+      localStorage.setItem("tia-schedule-last-sync", new Date().toISOString());
     } catch (error) {
-      console.error('Error saving to local storage:', error);
+      console.error("Error saving to local storage:", error);
     }
   }
 
@@ -98,9 +98,9 @@ export class CloudDataStore {
     if (!this.isOnline) {
       // Queue for later sync
       this.pendingChanges.push({
-        type: 'full_save',
+        type: "full_save",
         data: structuredClone(this.data),
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
       return;
     }
@@ -109,19 +109,19 @@ export class CloudDataStore {
       this.syncInProgress = true;
       await scheduleService.saveSchedule(this.data);
       this.lastSyncTime = new Date();
-      
+
       // Clear pending changes after successful sync
       this.pendingChanges = [];
-      
+
       // Update local cache
       this.saveToLocal(this.data);
     } catch (error) {
-      console.error('Error saving to cloud:', error);
+      console.error("Error saving to cloud:", error);
       // Queue for retry
       this.pendingChanges.push({
-        type: 'full_save',
+        type: "full_save",
         data: structuredClone(this.data),
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
     } finally {
       this.syncInProgress = false;
@@ -131,13 +131,13 @@ export class CloudDataStore {
   // Update a specific day
   async updateDay(dayNumber, dayData) {
     // Update local data immediately for responsiveness
-    const dayIndex = this.data.days.findIndex(d => d.day === dayNumber);
+    const dayIndex = this.data.days.findIndex((d) => d.day === dayNumber);
     if (dayIndex !== -1) {
       this.data.days[dayIndex] = { ...dayData };
-      
+
       // Update summary stats
       this.updateSummaryStats();
-      
+
       // Save locally immediately
       this.saveToLocal(this.data);
     }
@@ -145,10 +145,10 @@ export class CloudDataStore {
     if (!this.isOnline) {
       // Queue for later sync
       this.pendingChanges.push({
-        type: 'day_update',
+        type: "day_update",
         dayNumber,
         data: structuredClone(dayData),
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
       return;
     }
@@ -158,61 +158,72 @@ export class CloudDataStore {
       await scheduleService.updateDay(dayNumber, dayData);
       this.lastSyncTime = new Date();
     } catch (error) {
-      console.error('Error updating day in cloud:', error);
+      console.error("Error updating day in cloud:", error);
       // Queue for retry
       this.pendingChanges.push({
-        type: 'day_update',
+        type: "day_update",
         dayNumber,
         data: structuredClone(dayData),
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
     }
   }
 
   // Update summary statistics
   updateSummaryStats() {
-    const totalStaffHours = this.data.days.reduce((sum, day) => sum + parseFloat(day.totalHours || 0), 0);
+    const totalStaffHours = this.data.days.reduce(
+      (sum, day) => sum + parseFloat(day.totalHours || 0),
+      0
+    );
     const totalStaffCount = new Set(
-      this.data.days.flatMap(day => day.staff.map(s => s.name))
+      this.data.days.flatMap((day) => day.staff.map((s) => s.name))
     ).size;
-    const daysWithCoverage = this.data.days.filter(day => day.staff.length > 0).length;
-    
+    const daysWithCoverage = this.data.days.filter(
+      (day) => day.staff.length > 0
+    ).length;
+
     this.data.summary = {
       ...this.data.summary,
       totalStaffHours,
       totalStaffCount,
       daysWithCoverage,
-      estimatedPayroll: totalStaffHours * 15 // $15/hour estimate
+      estimatedPayroll: totalStaffHours * 15, // $15/hour estimate
     };
   }
 
   // Sync pending changes when back online
   async syncPendingChanges() {
-    if (!this.isOnline || this.syncInProgress || this.pendingChanges.length === 0) {
+    if (
+      !this.isOnline ||
+      this.syncInProgress ||
+      this.pendingChanges.length === 0
+    ) {
       return;
     }
 
     try {
       this.syncInProgress = true;
-      
+
       // Sort changes by timestamp
-      this.pendingChanges.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-      
+      this.pendingChanges.sort(
+        (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
+      );
+
       for (const change of this.pendingChanges) {
-        if (change.type === 'full_save') {
+        if (change.type === "full_save") {
           await scheduleService.saveSchedule(change.data);
-        } else if (change.type === 'day_update') {
+        } else if (change.type === "day_update") {
           await scheduleService.updateDay(change.dayNumber, change.data);
         }
       }
-      
+
       // Clear pending changes after successful sync
       this.pendingChanges = [];
       this.lastSyncTime = new Date();
-      
-      console.log('Successfully synced pending changes');
+
+      console.log("Successfully synced pending changes");
     } catch (error) {
-      console.error('Error syncing pending changes:', error);
+      console.error("Error syncing pending changes:", error);
     } finally {
       this.syncInProgress = false;
     }
@@ -220,10 +231,12 @@ export class CloudDataStore {
 
   // Set up real-time synchronization
   setupRealtimeSync() {
-    this.realtimeSubscription = scheduleService.subscribeToChanges((payload) => {
-      // Handle real-time updates from other devices
-      this.handleRealtimeUpdate(payload);
-    });
+    this.realtimeSubscription = scheduleService.subscribeToChanges(
+      (payload) => {
+        // Handle real-time updates from other devices
+        this.handleRealtimeUpdate(payload);
+      }
+    );
   }
 
   // Handle real-time updates
@@ -231,7 +244,7 @@ export class CloudDataStore {
     try {
       // Reload data from cloud to get latest changes
       const cloudData = await scheduleService.getCurrentSchedule();
-      
+
       if (cloudData && cloudData.data) {
         // Check if this update is newer than our last sync
         const updateTime = new Date(cloudData.updated_at);
@@ -239,25 +252,27 @@ export class CloudDataStore {
           // Update local data
           this.data = cloudData.data;
           this.lastSyncTime = updateTime;
-          
+
           // Update local cache
           this.saveToLocal(this.data);
-          
+
           // Notify UI about the update
           this.notifyDataChanged();
         }
       }
     } catch (error) {
-      console.error('Error handling real-time update:', error);
+      console.error("Error handling real-time update:", error);
     }
   }
 
   // Notify UI components about data changes
   notifyDataChanged() {
     // Dispatch custom event for UI components to listen to
-    window.dispatchEvent(new CustomEvent('schedule-data-changed', {
-      detail: { data: this.data }
-    }));
+    window.dispatchEvent(
+      new CustomEvent("schedule-data-changed", {
+        detail: { data: this.data },
+      })
+    );
   }
 
   // Get current data
@@ -271,7 +286,7 @@ export class CloudDataStore {
       isOnline: this.isOnline,
       syncInProgress: this.syncInProgress,
       pendingChanges: this.pendingChanges.length,
-      lastSyncTime: this.lastSyncTime
+      lastSyncTime: this.lastSyncTime,
     };
   }
 
